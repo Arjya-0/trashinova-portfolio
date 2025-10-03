@@ -1,13 +1,46 @@
+### Dependencies & build output
 node_modules/
 dist/
+
+### Environment variables
 .env
 .env.*
+
+### Firebase & local state
 firebase-debug.log
-.DS_Store
-*.local
+.firebase/
+.firebaserc.local
+
+### Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+### Coverage & caches
 coverage/
-public/assets/data/
-public/assets/models/
-public/assets/images/
-public/assets/papers/
+.vite/
+
+### Generated lock backups
+package-lock.backup.*
+
+### Large asset buckets (kept in Firebase Storage) - ignore actual uploaded binaries
+public/assets/models/*
+public/assets/data/*
+public/assets/papers/*
+
+# Keep placeholder markers so folders exist in repo
+!public/assets/models/.keep
+!public/assets/data/.keep
+!public/assets/papers/.keep
+
+### Allow images so basic branding/logos can live in repo
+# (Comment out to offload all images to Storage)
+# public/assets/images/*
