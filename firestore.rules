@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is team member
+    function isTeamMember() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/teamMembers/$(request.auth.uid));
+    }
+    
+    // Projects collection - public read, team write
+    match /projects/{projectId} {
+      allow read: if true;
+      allow create, update, delete: if isTeamMember();
+    }
+    
+    // Team members collection - public read, team write
+    match /teamMembers/{memberId} {
+      allow read: if true;
+      allow create, update, delete: if isTeamMember();
+    }
+    
+    // Research papers collection - public read, team write
+    match /research/{paperId} {
+      allow read: if true;
+      allow create, update, delete: if isTeamMember();
+    }
+    
+    // Site settings - public read, team write
+    match /settings/{settingId} {
+      allow read: if true;
+      allow update: if isTeamMember();
+    }
+  }
+}
