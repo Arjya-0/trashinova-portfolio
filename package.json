@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/checkEnv.mjs || exit 1",
     "dev": "vite",
+    "prebuild": "node scripts/checkEnv.mjs || exit 1",
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "npm run build; firebase deploy"
