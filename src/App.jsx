@@ -184,7 +184,7 @@ const ProjectDetailModal = ({ project, onClose }) => {
 // Main App Component
 const TrashinovaApp = () => {
   // Settings state (load from Firestore)
-  const [settings, setSettings] = useState({ tagline: '', about: '', siteTitle: 'ORCA', heroDesc: '' });
+  const [settings, setSettings] = useState({ tagline: '', about: '', siteTitle: 'Trashinova', heroDesc: '' });
   const [settingsLoading, setSettingsLoading] = useState(true);
   // Load settings from Firestore
   useEffect(() => {
@@ -237,9 +237,25 @@ const TrashinovaApp = () => {
   const sampleProjects = [
     {
       id: 1,
+      title: "Container Control Module",
+      description: "Advanced 3D model of ORCA's Container Control Module - a key component for automated waste sorting and processing in Mars habitats.",
+      tags: ["3D", "ORCA"],
+      modelUrl: "/assets/models/container_control_module.glb",
+      metrics: { format: ".glb", category: "MIRU Component" }
+    },
+    {
+      id: 2,
+      title: "Modular Inorganic Recycling Unit",
+      description: "Visual Computer-Aided Design Model of the MIRU system - the core recycling unit that processes inorganic waste materials in Mars habitats using advanced sorting and processing algorithms.",
+      tags: ["3D", "ORCA", "CAD"],
+      modelUrl: "/assets/models/Modular Inorganic Recycling Unit - Visual Computer-Aided Design Model.obj",
+      metrics: { format: ".obj", category: "MIRU Core System" }
+    },
+    {
+      id: 3,
       title: "3D Object Model",
-      description: "High-resolution 3D model of a space-related object, visualized interactively.",
-      tags: ["3D"],
+      description: "High-resolution 3D model of a space-related object, visualized interactively for Mars recycling applications.",
+      tags: ["3D", "demo"],
       modelUrl: "/assets/models/object.glb",
       metrics: { polygons: "1.2M", format: ".glb" }
     }
@@ -419,7 +435,7 @@ const TrashinovaApp = () => {
                    suppressContentEditableWarning={true}
                    onBlur={e => editMode && handleSettingsEdit('siteTitle', e.target.innerText)}
                  >
-                   {settings.siteTitle || 'ORCA'}
+                   {settings.siteTitle || 'Trashinova'}
                  </span>
              </h1>
              <p
