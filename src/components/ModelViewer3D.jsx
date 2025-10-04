@@ -5,8 +5,8 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Download, Maximize2, RotateCcw, Camera } from 'lucide-react';
 import * as THREE from 'three';
 
-// Model component that loads and displays the 3D model with robust large file handling
-function Model({ url, onLoad, onError, onProgress }) {
+// Model component that loads and displays the 3D model with robust file handling
+function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
   const modelRef = useRef();
   const [loadingState, setLoadingState] = useState('loading');
   const [loadProgress, setLoadProgress] = useState(0);
@@ -16,12 +16,12 @@ function Model({ url, onLoad, onError, onProgress }) {
   
   if (fileExtension === 'glb' || fileExtension === 'gltf') {
     try {
-      // For large GLTF/GLB files, we need to handle them with progress tracking
+      // For GLTF/GLB files, we need to handle them with progress tracking
       const { scene } = useGLTF(url, true); // Enable draco compression support
       
       React.useEffect(() => {
         if (scene) {
-          console.log('Large GLB/GLTF model loaded successfully:', url);
+          console.log('GLB/GLTF model loaded successfully:', url);
           setLoadingState('loaded');
           setLoadProgress(100);
           onLoad && onLoad();
@@ -37,7 +37,7 @@ function Model({ url, onLoad, onError, onProgress }) {
         />
       );
     } catch (error) {
-      console.error('Error loading large GLB/GLTF model:', error);
+      console.error('Error loading GLB/GLTF model:', error);
       React.useEffect(() => {
         setLoadingState('error');
         onError && onError(error);
@@ -50,8 +50,8 @@ function Model({ url, onLoad, onError, onProgress }) {
       
       React.useEffect(() => {
         if (obj) {
-          console.log('Large OBJ model loaded successfully:', url);
-          // Add basic material to OBJ models with better performance settings
+          console.log('OBJ model loaded successfully:', url);
+          // Add basic material to OBJ models with appropriate performance settings
           obj.traverse((child) => {
             if (child.isMesh) {
               child.material = new THREE.MeshStandardMaterial({ 
@@ -59,17 +59,22 @@ function Model({ url, onLoad, onError, onProgress }) {
                 metalness: 0.1,
                 roughness: 0.7
               });
-              // Optimize for large models
+              // Optimize based on file size
               child.frustumCulled = true;
-              child.castShadow = false; // Disable shadows for performance
-              child.receiveShadow = false;
+              if (isLargeFile) {
+                child.castShadow = false; // Disable shadows for large files
+                child.receiveShadow = false;
+              } else {
+                child.castShadow = true;
+                child.receiveShadow = true;
+              }
             }
           });
           setLoadingState('loaded');
           setLoadProgress(100);
           onLoad && onLoad();
         }
-      }, [obj, onLoad]);
+      }, [obj, onLoad, isLargeFile]);
 
       return (
         <primitive 
@@ -80,7 +85,7 @@ function Model({ url, onLoad, onError, onProgress }) {
         />
       );
     } catch (error) {
-      console.error('Error loading large OBJ model:', error);
+      console.error('Error loading OBJ model:', error);
       React.useEffect(() => {
         setLoadingState('error');
         onError && onError(error);
@@ -302,7 +307,7 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
                 />
               )}
 
-              {/* Large File Optimized Model Loading */}
+              {/* Model Loading with proper file size handling */}
               {modelUrl && (
                 <>
                   {!isLargeFile && (
@@ -312,6 +317,7 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
                         onLoad={handleModelLoad} 
                         onError={handleModelError}
                         onProgress={handleModelProgress}
+                        isLargeFile={false}
                       />
                     </Stage>
                   )}
@@ -322,6 +328,7 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
                       onLoad={handleModelLoad} 
                       onError={handleModelError}
                       onProgress={handleModelProgress}
+                      isLargeFile={true}
                     />
                   )}
                 </>
