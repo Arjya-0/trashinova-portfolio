@@ -20,11 +20,17 @@ const AdminAuth = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Emergency override for known UID (always admin if authenticated)
-        if (currentUser.uid === "rd5VwwDKPvOUFB4HupzFKTC2HND2") {
+        // Emergency override for known admin emails
+        const adminEmails = [
+          "arjyaarindam@gmail.com",
+          "paramita.aishwarja@example.com" // Add other admin emails here
+        ];
+        
+        if (adminEmails.includes(currentUser.email) || currentUser.uid === "rd5VwwDKPvOUFB4HupzFKTC2HND2") {
           setIsTeamMember(true);
           return setLoading(false);
         }
+        
         try {
           const teamMemberDoc = await getDoc(doc(db, 'teamMembers', currentUser.uid));
           setIsTeamMember(teamMemberDoc.exists());

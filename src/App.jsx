@@ -452,10 +452,21 @@ const TrashinovaApp = () => {
                 </span>
               </a>
               <a 
-                href="https://github.com/"
+                href="https://github.com/trashinova/Orbital-Recycling-Circularity-Architecture-ORCA-Mars-Recycling"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white border-2 border-orange-700/50 rounded-lg font-semibold transition-all"
               >
                 GitHub
+              </a>
+              <a 
+                href="https://youtu.be/cdW8Pyqrz4k?si=KNJP6FuIOkTR7JCQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-red-900 hover:bg-red-800 text-white border-2 border-red-700/50 rounded-lg font-semibold transition-all flex items-center gap-2"
+              >
+                <Play className="w-5 h-5" />
+                30 Seconds of Glory
               </a>
             </div>
           </div>
@@ -542,14 +553,151 @@ const TrashinovaApp = () => {
               {activeTab === 'web-portal' && (
                 <div id="web-portal-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
                   <h3 className="text-xl font-semibold text-orange-400 mb-3">Live Web Portal</h3>
-                  <p className="text-slate-300">Coming soon: real-time mission and recycling interface.</p>
+                  <p className="text-slate-300 mb-4">Real-time mission and recycling interface.</p>
+                  <a 
+                    href="https://arjya-0.github.io/mars-wastenet-dashboard/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-lg font-semibold transition-all shadow-lg"
+                  >
+                    <ExternalLink className="w-5 h-5" />
+                    ORCA Live Portal Link
+                  </a>
                 </div>
               )}
               
               {activeTab === 'details' && (
-                <div id="details-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
-                  <h3 className="text-xl font-semibold text-orange-400 mb-3">Details of ORCA</h3>
-                  <p className="text-slate-300">Technical architecture, subsystem interactions, and deployment model (placeholder).</p>
+                <div id="details-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg space-y-6">
+                  <h3 className="text-2xl font-semibold text-orange-400 mb-4">Details of ORCA</h3>
+                  
+                  {/* Summary Section */}
+                  <div className="bg-gradient-to-r from-orange-900/20 to-red-900/20 p-6 rounded-lg border border-orange-500/20">
+                    <h4 className="text-xl font-bold text-orange-300 mb-3">Summary</h4>
+                    <p className="text-slate-200 leading-relaxed">
+                      ORCA (Orbital Recycling & Circularity Architecture) is a youth-led innovation tackling Mars waste challenges, where traditional disposal is impossible and resupply limited. Designed by a dynamic youth team, all high schoolers from Dhaka, showcasing fresh talent in space innovation, it fuses MIRU's mechanical shred/melt/extrude tech with BICL's bio-inspired metabolism, transforming inorganics into habitat resources. This zero-waste system supports Renovations (reusing foams/alloys for structures), Celebrations (turning pouches into morale-boosting décor), and Discoveries (repurposing carbon-based waste into advanced material loops)—maximizing recovery with minimal energy and water. A global "Wish Wall" portal connects Earthlings to Martians, fostering cultural ties and STEM inspiration. ORCA shifts exploration from exploitative to regenerative, proving young innovators can pioneer sustainable space futures.
+                    </p>
+                  </div>
+
+                  {/* Detailed Project Description */}
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-bold text-blue-300">Detailed Project Description</h4>
+                    
+                    <div className="bg-slate-700/30 p-5 rounded-lg">
+                      <p className="text-slate-200 font-medium mb-3">A scalable architecture turning trash into resources, minimizing energy/water while boosting morale via cultural outputs.</p>
+                      
+                      <p className="text-slate-300 leading-relaxed mb-4">
+                        In Apollo missions, astronauts faced regolith adhesion and scattering under low gravity—today, Mars missions encounter a mounting waste crisis, with ~12,600 kg of inorganics (plastics, metals, fabrics) accumulating over three years for an 8-crew habitat at Jezero Crater. Mars' thin atmosphere and limited resupply windows exacerbate this challenge, posing risks to safety, storage, and sustainability.
+                      </p>
+                      
+                      <p className="text-slate-300 leading-relaxed">
+                        ORCA (Orbital Recycling & Circularity Architecture) is a scalable architecture turning trash into resources, minimizing energy/water while boosting morale via cultural outputs. Alignment with NASA Challenge: Directly tackles sustainable recycling for Mars habitats, focusing on reuse (max recovery, min inputs/outputs) across scenarios.
+                      </p>
+                    </div>
+
+                    {/* Core ORCA System */}
+                    <div className="space-y-4">
+                      <h5 className="text-lg font-bold text-cyan-300">Core ORCA System</h5>
+                      
+                      {/* MIRU Section */}
+                      <div className="bg-slate-700/20 p-4 rounded-lg border-l-4 border-orange-400">
+                        <h6 className="font-bold text-orange-300 mb-2">2.1 Modular Intelligent Recycling Unit (MIRU)</h6>
+                        <p className="text-slate-300 text-sm leading-relaxed mb-3">
+                          A plug-and-play core processing inorganics, leveraging AI-sorting (optical/thermal/magnetic sensors) to handle ~4 kg/sol. Design principles: Compact sealed modules for dust/radiation protection, scalable for colony growth (TRL 5–7, inspired by NASA's Refabricator/Trash Compaction Processing System (TCPS)). Regolith and waste mixing enhance material durability, addressing in-space manufacturing gaps.
+                        </p>
+                        
+                        <div className="grid md:grid-cols-2 gap-3 text-sm">
+                          <div className="space-y-1">
+                            <p><strong className="text-orange-200">Plastics:</strong> <span className="text-slate-300">Shredded, melted, extruded into 3D-printing filament</span></p>
+                            <p><strong className="text-orange-200">Metals:</strong> <span className="text-slate-300">Induction melting + reshaping into tools/alloys</span></p>
+                            <p><strong className="text-orange-200">Fabrics/Clothing:</strong> <span className="text-slate-300">Shredded and repurposed into insulation/filters</span></p>
+                            <p><strong className="text-orange-200">Rubber/Elastomers:</strong> <span className="text-slate-300">Patching/devulcanization for seals/dampers</span></p>
+                          </div>
+                          <div className="space-y-1">
+                            <p><strong className="text-orange-200">Electronics:</strong> <span className="text-slate-300">Dismantling for component salvage</span></p>
+                            <p><strong className="text-orange-200">Glass/Ceramics:</strong> <span className="text-slate-300">Crushed into shielding tiles/fillers</span></p>
+                            <p><strong className="text-orange-200">Composites:</strong> <span className="text-slate-300">Precision cutting for reinforcement</span></p>
+                            <p><strong className="text-orange-200">Foams/Insulation:</strong> <span className="text-slate-300">Compaction/reshaping for substrates</span></p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* BICL Section */}
+                      <div className="bg-slate-700/20 p-4 rounded-lg border-l-4 border-green-400">
+                        <h6 className="font-bold text-green-300 mb-2">2.2 Bio-Inspired Closed Loop (BICL)</h6>
+                        <p className="text-slate-300 text-sm leading-relaxed mb-3">
+                          A sealed booster chamber inside MIRU, drawing from fungal binding techniques as a horizon vision to reinforce and repurpose inorganic wastes into composite materials. Inspiration: Indigenous weaving/mycelial processes for cultural value. Inorganic waste categorization guides its focus, with myco-material feasibility tested against in-space needs.
+                        </p>
+                        
+                        <div className="space-y-2 text-sm">
+                          <p><strong className="text-green-200">Fungal-Inspired Binding:</strong> <span className="text-slate-300">Reinforces microplastics/foams into myco-panels</span></p>
+                          <p><strong className="text-green-200">Myco-Architecture Bricks & Panels:</strong> <span className="text-slate-300">Integration of regolith/inorganics into sturdy elements</span></p>
+                          <p><strong className="text-green-200">Foam Binding & Recycling:</strong> <span className="text-slate-300">Reinforces insulation with fungal-inspired networks</span></p>
+                          <p><strong className="text-green-200">Microplastic Capture & Rebinding:</strong> <span className="text-slate-300">Traps/resolidifies residues into usable composites</span></p>
+                        </div>
+                      </div>
+
+                      {/* Hydraulic Press */}
+                      <div className="bg-slate-700/20 p-4 rounded-lg border-l-4 border-blue-400">
+                        <h6 className="font-bold text-blue-300 mb-2">2.3 Hydraulic Press Module</h6>
+                        <p className="text-slate-300 text-sm leading-relaxed mb-2">
+                          Dual units (external for oversized inputs &gt;2x2m door, internal for output reduction) as preprocessing step, reducing volume and preparing feedstock.
+                        </p>
+                        <div className="space-y-1 text-sm">
+                          <p><strong className="text-blue-200">Foam Compaction:</strong> <span className="text-slate-300">Reduces storage needs for habitat use</span></p>
+                          <p><strong className="text-blue-200">Regolith Blending:</strong> <span className="text-slate-300">Integrates Jezero minerals for shielding composites</span></p>
+                          <p><strong className="text-blue-200">Panel Formation:</strong> <span className="text-slate-300">Shapes outputs for repairs</span></p>
+                        </div>
+                      </div>
+
+                      {/* Digital Layer */}
+                      <div className="bg-slate-700/20 p-4 rounded-lg border-l-4 border-purple-400">
+                        <h6 className="font-bold text-purple-300 mb-2">2.4 Core Digital Layer</h6>
+                        <p className="text-slate-300 text-sm leading-relaxed mb-3">
+                          Real-Time Portal: AI dashboard with NASA APIs (e.g., Mars Weather for env optimization, Power for energy scheduling). The portal promotes STEM challenges and citizen participation, inspiring global collaboration in Mars missions.
+                        </p>
+                        <div className="space-y-2 text-sm">
+                          <p><strong className="text-purple-200">Onboard Dashboard:</strong> <span className="text-slate-300">Monitors system health with real-time metrics</span></p>
+                          <p><strong className="text-purple-200">Earth Integration:</strong> <span className="text-slate-300">"Wish Wall" for citizen messages/art submissions, plus STEM challenges</span></p>
+                          <p><strong className="text-purple-200">Future Accord Readiness:</strong> <span className="text-slate-300">Blockchain for audits under Interplanetary Waste Accord</span></p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* How Does It Work */}
+                    <div className="bg-gradient-to-r from-slate-800/40 to-slate-700/40 p-5 rounded-lg">
+                      <h5 className="text-lg font-bold text-yellow-300 mb-3">How Does It Work?</h5>
+                      <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                        ORCA's workflow transforms waste into resources through seamless integration: Waste → External Press → MIRU Intake → AI Sort → BICL Enhance → Internal Press → Outputs. Adaptive via APIs for Martian conditions.
+                      </p>
+                      
+                      <div className="grid md:grid-cols-3 gap-4 text-sm">
+                        <div className="bg-red-900/20 p-3 rounded border border-red-600/20">
+                          <h6 className="font-bold text-red-300 mb-2">3.1 Residence Renovations</h6>
+                          <p className="text-slate-300 text-xs">Recycling habitat cubes, foam packaging, aluminum structures for structural repairs and upgrades.</p>
+                        </div>
+                        <div className="bg-yellow-900/20 p-3 rounded border border-yellow-600/20">
+                          <h6 className="font-bold text-yellow-300 mb-2">3.2 Cosmic Celebrations</h6>
+                          <p className="text-slate-300 text-xs">Repurposing materials into party supplies and morale-boosting décor with Earth contributions.</p>
+                        </div>
+                        <div className="bg-green-900/20 p-3 rounded border border-green-600/20">
+                          <h6 className="font-bold text-green-300 mb-2">3.3 Daring Discoveries</h6>
+                          <p className="text-slate-300 text-xs">Recycling EVA waste, filters, and scientific equipment for operational reuse.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Advantages */}
+                    <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 p-5 rounded-lg">
+                      <h5 className="text-lg font-bold text-blue-300 mb-3">Advantages over Previous Systems</h5>
+                      <div className="space-y-2 text-sm">
+                        <p><strong className="text-blue-200">Maximized Resource Recovery:</strong> <span className="text-slate-300">Converts all inorganic waste streams into reusable materials</span></p>
+                        <p><strong className="text-blue-200">Bio-Hybrid Reinforcement:</strong> <span className="text-slate-300">BICL leverages fungal-inspired binding for enhanced durability</span></p>
+                        <p><strong className="text-blue-200">Global Engagement:</strong> <span className="text-slate-300">"Wish Wall" and STEM challenges connect Earth youth with Mars missions</span></p>
+                        <p><strong className="text-blue-200">Scalable Design:</strong> <span className="text-slate-300">MIRU and BICL modules adapt to Moon or asteroid habitats</span></p>
+                        <p><strong className="text-blue-200">Environmental Optimization:</strong> <span className="text-slate-300">NASA API integration ensures adaptive operation under Martian conditions</span></p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
               
@@ -777,7 +925,7 @@ const TrashinovaApp = () => {
             <div className="flex items-center gap-6 text-sm text-slate-500">
               <a href="#" className="hover:text-orange-400 transition-colors">Privacy</a>
               <a href="#" className="hover:text-orange-400 transition-colors">Terms</a>
-              <a href="https://github.com/orca" className="hover:text-orange-400 transition-colors">GitHub</a>
+              <a href="https://github.com/trashinova/Orbital-Recycling-Circularity-Architecture-ORCA-Mars-Recycling" target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">GitHub</a>
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 Deployed on Firebase
