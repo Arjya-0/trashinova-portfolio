@@ -250,14 +250,6 @@ const TrashinovaApp = () => {
       tags: ["3D", "ORCA", "CAD"],
       modelUrl: "/assets/models/Modular Inorganic Recycling Unit - Visual Computer-Aided Design Model.obj",
       metrics: { format: ".obj", category: "MIRU Core System" }
-    },
-    {
-      id: 3,
-      title: "3D Object Model",
-      description: "High-resolution 3D model of a space-related object, visualized interactively for Mars recycling applications.",
-      tags: ["3D", "demo"],
-      modelUrl: "/assets/models/object.glb",
-      metrics: { polygons: "1.2M", format: ".glb" }
     }
   ];
 
@@ -371,10 +363,10 @@ const TrashinovaApp = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-orange-500 via-red-600 to-yellow-500 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-orange-500/50">
-                O
+                T
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 bg-clip-text text-transparent">
-                ORCA
+                Trashinova
               </span>
             </div>
             
