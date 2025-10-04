@@ -32,6 +32,9 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
   const modelRef = useRef();
   const [loadingState, setLoadingState] = useState('loading');
   const [loadProgress, setLoadProgress] = useState(0);
+  // OBJ-specific state (always declare hooks at top level)
+  const [objModel, setObjModel] = useState(null);
+  const [objError, setObjError] = useState(null);
 
   // Check file extension to determine loader
   const fileExtension = url.split('.').pop().toLowerCase();
@@ -72,9 +75,7 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
       return null;
     }
   } else if (fileExtension === 'obj') {
-    // OBJ files can be problematic, so we'll use a more robust approach
-    const [objModel, setObjModel] = useState(null);
-    const [objError, setObjError] = useState(null);
+    // OBJ files - use the state declared at the top
 
     React.useEffect(() => {
       console.log('Loading OBJ file:', url);
