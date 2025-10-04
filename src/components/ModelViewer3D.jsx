@@ -1,6 +1,7 @@
 import React, { Suspense, useRef, useState } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Environment, useGLTF, Stage, Grid } from '@react-three/drei';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Download, Maximize2, RotateCcw, Camera } from 'lucide-react';
 import * as THREE from 'three';
 
@@ -10,24 +11,60 @@ function Model({ url, onLoad }) {
   const [error, setError] = useState(null);
 
   try {
-    const { scene } = useGLTF(url);
+    // Check file extension to determine loader
+    const fileExtension = url.split('.').pop().toLowerCase();
     
-    React.useEffect(() => {
-      if (scene) {
-        onLoad && onLoad();
-      }
-    }, [scene, onLoad]);
+    if (fileExtension === 'glb' || fileExtension === 'gltf') {
+      const { scene } = useGLTF(url);
+      
+      React.useEffect(() => {
+        if (scene) {
+          onLoad && onLoad();
+        }
+      }, [scene, onLoad]);
 
-    return (
-      <primitive 
-        ref={modelRef}
-        object={scene} 
-        scale={1}
-        position={[0, 0, 0]}
-      />
-    );
+      return (
+        <primitive 
+          ref={modelRef}
+          object={scene} 
+          scale={1}
+          position={[0, 0, 0]}
+        />
+      );
+    } else if (fileExtension === 'obj') {
+      const obj = useLoader(OBJLoader, url);
+      
+      React.useEffect(() => {
+        if (obj) {
+          // Add basic material to OBJ models
+          obj.traverse((child) => {
+            if (child.isMesh) {
+              child.material = new THREE.MeshStandardMaterial({ 
+                color: '#888888',
+                metalness: 0.1,
+                roughness: 0.7
+              });
+            }
+          });
+          onLoad && onLoad();
+        }
+      }, [obj, onLoad]);
+
+      return (
+        <primitive 
+          ref={modelRef}
+          object={obj} 
+          scale={0.1}
+          position={[0, 0, 0]}
+        />
+      );
+    } else {
+      throw new Error('Unsupported file format');
+    }
   } catch (err) {
-    setError(err.message);
+    React.useEffect(() => {
+      setError(err.message);
+    }, [err]);
     return null;
   }
 }
@@ -49,6 +86,13 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showGrid, setShowGrid] = useState(true);
+
+  // Error boundary for model loading
+  const handleModelError = (error) => {
+    console.error('3D Model Error:', error);
+    setError(`Failed to load 3D model: ${error.message || 'Unknown error'}`);
+    setIsLoading(false);
+  };
 
   const handleReset = () => {
     if (controlsRef.current) {
@@ -82,7 +126,30 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
 
   const handleModelLoad = () => {
     setIsLoading(false);
+    setError(null);
   };
+
+  // Validate model URL
+  React.useEffect(() => {
+    if (!modelUrl) {
+      setError('No model URL provided');
+      setIsLoading(false);
+      return;
+    }
+    
+    const supportedFormats = ['glb', 'gltf', 'obj'];
+    const fileExtension = modelUrl.split('.').pop().toLowerCase();
+    
+    if (!supportedFormats.includes(fileExtension)) {
+      setError(`Unsupported file format: .${fileExtension}. Supported formats: ${supportedFormats.join(', ')}`);
+      setIsLoading(false);
+      return;
+    }
+    
+    // Reset states when URL changes
+    setIsLoading(true);
+    setError(null);
+  }, [modelUrl]);
 
   return (
     <div className="relative w-full h-96 md:h-[500px] bg-gradient-to-br from-slate-950 via-slate-900 to-orange-950 rounded-xl overflow-hidden shadow-2xl border border-orange-900/20">
@@ -109,64 +176,67 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
 
       {/* 3D Canvas */}
       <div ref={canvasRef} className="w-full h-full">
-        <Canvas
-          shadows
-          camera={{ position: [5, 5, 5], fov: 50 }}
-          gl={{ preserveDrawingBuffer: true }}
-        >
-          <Suspense fallback={<LoadingSpinner />}>
-            {/* Lighting */}
-            <ambientLight intensity={0.5} />
-            <spotLight 
-              position={[10, 10, 10]} 
-              angle={0.15} 
-              penumbra={1} 
-              intensity={1}
-              castShadow 
-            />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ff8800" />
-            <pointLight position={[10, 10, 10]} intensity={0.5} color="#4488ff" />
-
-            {/* Grid Helper */}
-            {showGrid && (
-              <Grid
-                args={[10, 10]}
-                cellSize={0.5}
-                cellThickness={0.5}
-                cellColor="#ff8800"
-                sectionSize={1}
-                sectionThickness={1}
-                sectionColor="#ff4400"
-                fadeDistance={25}
-                fadeStrength={1}
-                followCamera={false}
-                infiniteGrid={true}
+        {!error && (
+          <Canvas
+            shadows
+            camera={{ position: [5, 5, 5], fov: 50 }}
+            gl={{ preserveDrawingBuffer: true }}
+            onError={handleModelError}
+          >
+            <Suspense fallback={<LoadingSpinner />}>
+              {/* Lighting */}
+              <ambientLight intensity={0.5} />
+              <spotLight 
+                position={[10, 10, 10]} 
+                angle={0.15} 
+                penumbra={1} 
+                intensity={1}
+                castShadow 
               />
-            )}
+              <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ff8800" />
+              <pointLight position={[10, 10, 10]} intensity={0.5} color="#4488ff" />
 
-            {/* Model */}
-            {modelUrl && (
-              <Stage environment="city" intensity={0.5}>
-                <Model url={modelUrl} onLoad={handleModelLoad} />
-              </Stage>
-            )}
+              {/* Grid Helper */}
+              {showGrid && (
+                <Grid
+                  args={[10, 10]}
+                  cellSize={0.5}
+                  cellThickness={0.5}
+                  cellColor="#ff8800"
+                  sectionSize={1}
+                  sectionThickness={1}
+                  sectionColor="#ff4400"
+                  fadeDistance={25}
+                  fadeStrength={1}
+                  followCamera={false}
+                  infiniteGrid={true}
+                />
+              )}
 
-            {/* Environment */}
-            <Environment preset="sunset" />
+              {/* Model */}
+              {modelUrl && (
+                <Stage environment="city" intensity={0.5}>
+                  <Model url={modelUrl} onLoad={handleModelLoad} />
+                </Stage>
+              )}
 
-            {/* Camera Controls */}
-            <OrbitControls
-              ref={controlsRef}
-              enablePan={true}
-              enableZoom={true}
-              enableRotate={true}
-              minDistance={2}
-              maxDistance={20}
-              autoRotate={false}
-              autoRotateSpeed={0.5}
-            />
-          </Suspense>
-        </Canvas>
+              {/* Environment */}
+              <Environment preset="sunset" />
+
+              {/* Camera Controls */}
+              <OrbitControls
+                ref={controlsRef}
+                enablePan={true}
+                enableZoom={true}
+                enableRotate={true}
+                minDistance={2}
+                maxDistance={20}
+                autoRotate={false}
+                autoRotateSpeed={0.5}
+              />
+            </Suspense>
+          </Canvas>
+        )}
       </div>
 
       {/* Control Panel */}
