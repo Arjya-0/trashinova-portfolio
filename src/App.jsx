@@ -237,11 +237,11 @@ const TrashinovaApp = () => {
   const sampleProjects = [
     {
       id: 1,
-      title: "Container Control Module",
-      description: "Advanced 3D model of ORCA's Container Control Module - a key component for automated waste sorting and processing in Mars habitats.",
-      tags: ["3D", "ORCA"],
+      title: "BICL Model",
+      description: "BICL Reactor – A closed-loop bioconversion system that uses microbes and fungi to turn waste into resources like bio-plastics, fertilizer, and energy precursors. It recycles water and nutrients, minimizes waste, and integrates with habitat systems for sustainable long-term missions.",
+      tags: ["3D", "ORCA", "BICL"],
       modelUrl: "/assets/models/container_control_module.glb",
-      metrics: { format: ".glb", category: "MIRU Component" }
+      metrics: { format: ".glb", category: "BICL Reactor" }
     },
     {
       id: 2,

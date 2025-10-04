@@ -168,14 +168,14 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
     setIsLoading(true);
     setError(null);
     
-    // Set a timeout to prevent infinite loading
+    // Set a timeout to prevent infinite loading (longer for large files)
     const loadingTimeout = setTimeout(() => {
       if (isLoading) {
         console.warn('Model loading timeout for:', modelUrl);
-        setError('Model loading timeout. The file may be too large or corrupted.');
+        setError('Model loading timeout. The file may be too large (>50MB), corrupted, or the server is slow. Consider using a smaller/compressed model file.');
         setIsLoading(false);
       }
-    }, 15000); // 15 second timeout
+    }, 30000); // 30 second timeout for large files
     
     return () => {
       clearTimeout(loadingTimeout);
@@ -189,7 +189,8 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
         <div className="absolute inset-0 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm z-20">
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto mb-4"></div>
-            <p className="text-orange-400 font-semibold">Loading 3D Model...</p>
+            <p className="text-orange-400 font-semibold mb-2">Loading 3D Model...</p>
+            <p className="text-slate-400 text-sm">Large files (50MB+) may take 30+ seconds</p>
           </div>
         </div>
       )}

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   signInWithEmailAndPassword, 
   signOut, 
-  onAuthStateChanged 
+  onAuthStateChanged,
+  sendPasswordResetEmail 
 } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
@@ -15,6 +16,7 @@ const AdminAuth = ({ children }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [resetSent, setResetSent] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -67,6 +69,21 @@ const AdminAuth = ({ children }) => {
       await signOut(auth);
     } catch (err) {
       console.error('Error signing out:', err);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      setError('Please enter your email address first');
+      return;
+    }
+    
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetSent(true);
+      setError('');
+    } catch (err) {
+      setError('Error sending password reset email. Please check your email address.');
     }
   };
 
@@ -126,6 +143,12 @@ const AdminAuth = ({ children }) => {
               </div>
             )}
 
+            {resetSent && (
+              <div className="bg-green-900/20 border border-green-800 rounded-lg p-3">
+                <p className="text-green-400 text-sm">Password reset email sent! Check your inbox.</p>
+              </div>
+            )}
+
             <button
               type="submit"
               className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-orange-500/50"
@@ -134,6 +157,15 @@ const AdminAuth = ({ children }) => {
               Sign In
             </button>
           </form>
+
+          <div className="mt-4 text-center">
+            <button
+              onClick={handlePasswordReset}
+              className="text-orange-400 hover:text-orange-300 text-sm font-medium underline"
+            >
+              Forgot Password?
+            </button>
+          </div>
 
           <div className="mt-6 text-center">
             <button
