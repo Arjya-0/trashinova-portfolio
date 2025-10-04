@@ -150,7 +150,7 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
   // Validate model URL
   React.useEffect(() => {
     if (!modelUrl || modelUrl.trim() === '') {
-      setError('3D model temporarily unavailable. This model file is too large (50+ MB) for web viewing. Please use a compressed version under 10MB for optimal performance.');
+      setError('No model URL provided');
       setIsLoading(false);
       return;
     }
@@ -165,17 +165,18 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
     }
     
     // Reset states when URL changes
+    console.log('Starting to load large 3D model:', modelUrl);
     setIsLoading(true);
     setError(null);
     
-    // Set a timeout to prevent infinite loading (longer for large files)
+    // Set a timeout to prevent infinite loading (extra long for very large files)
     const loadingTimeout = setTimeout(() => {
       if (isLoading) {
         console.warn('Model loading timeout for:', modelUrl);
-        setError(`Model loading timeout. File: ${modelUrl.split('/').pop()} may be too large (>50MB), corrupted, or the server is slow. Consider compressing the model or using a smaller file format.`);
+        setError(`Model loading timeout after 60 seconds. File: ${modelUrl.split('/').pop()} (50+ MB) may be too large for your current connection. Try refreshing or use a faster internet connection.`);
         setIsLoading(false);
       }
-    }, 45000); // 45 second timeout for very large files
+    }, 60000); // 60 second timeout for very large files
     
     return () => {
       clearTimeout(loadingTimeout);
@@ -189,9 +190,10 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
         <div className="absolute inset-0 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm z-20">
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto mb-4"></div>
-            <p className="text-orange-400 font-semibold mb-2">Loading 3D Model...</p>
-            <p className="text-slate-400 text-sm mb-1">Large files (50MB+) may take 30-45 seconds</p>
-            <p className="text-slate-300 text-xs">File: {modelUrl ? modelUrl.split('/').pop() : 'Unknown'}</p>
+            <p className="text-orange-400 font-semibold mb-2">Loading BICL Model...</p>
+            <p className="text-slate-400 text-sm mb-1">🚀 Loading large 3D model (50.5 MB)</p>
+            <p className="text-slate-300 text-xs mb-2">This may take 30-60 seconds - please be patient!</p>
+            <p className="text-orange-300 text-xs animate-pulse">File: {modelUrl ? modelUrl.split('/').pop() : 'Unknown'}</p>
           </div>
         </div>
       )}
