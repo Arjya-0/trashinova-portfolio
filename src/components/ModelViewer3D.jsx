@@ -5,6 +5,28 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Download, Maximize2, RotateCcw, Camera } from 'lucide-react';
 import * as THREE from 'three';
 
+// Error boundary component for model loading
+function ModelErrorBoundary({ children, onError }) {
+  const [hasError, setHasError] = useState(false);
+
+  React.useEffect(() => {
+    const handleError = (event) => {
+      console.error('Model loading error caught:', event.error);
+      setHasError(true);
+      onError && onError(event.error);
+    };
+
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, [onError]);
+
+  if (hasError) {
+    return null;
+  }
+
+  return children;
+}
+
 // Model component that loads and displays the 3D model with robust file handling
 function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
   const modelRef = useRef();
@@ -13,6 +35,11 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
 
   // Check file extension to determine loader
   const fileExtension = url.split('.').pop().toLowerCase();
+  
+  // Add debugging
+  React.useEffect(() => {
+    console.log('Model component: Loading', url, 'isLargeFile:', isLargeFile, 'extension:', fileExtension);
+  }, [url, isLargeFile, fileExtension]);
   
   if (fileExtension === 'glb' || fileExtension === 'gltf') {
     try {
@@ -46,6 +73,7 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
     }
   } else if (fileExtension === 'obj') {
     try {
+      console.log('Loading OBJ file:', url);
       const obj = useLoader(OBJLoader, url);
       
       React.useEffect(() => {
@@ -122,10 +150,12 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
   const [loadProgress, setLoadProgress] = useState(0);
   const [isLargeFile, setIsLargeFile] = useState(false);
 
-  // Enhanced error boundary for large model loading
+  // Enhanced error boundary for model loading
   const handleModelError = (error) => {
-    console.error('Large 3D Model Error:', error);
-    setError(`Failed to load large 3D model: ${error.message || 'Unknown error'}. File may be too large (>60MB) or corrupted.`);
+    console.error('3D Model Error:', error);
+    const fileType = isLargeFile ? 'large 3D model' : '3D model';
+    const sizeInfo = isLargeFile ? 'File may be too large (>60MB) or corrupted.' : 'Please check if the file exists and is in a supported format.';
+    setError(`Failed to load ${fileType}: ${error.message || 'Unknown error'}. ${sizeInfo}`);
     setIsLoading(false);
   };
 
@@ -309,7 +339,7 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
 
               {/* Model Loading with proper file size handling */}
               {modelUrl && (
-                <>
+                <ModelErrorBoundary onError={handleModelError}>
                   {!isLargeFile && (
                     <Stage environment="city" intensity={0.5}>
                       <Model 
@@ -331,7 +361,7 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
                       isLargeFile={true}
                     />
                   )}
-                </>
+                </ModelErrorBoundary>
               )}
 
               {/* Environment - Simplified for large files */}
