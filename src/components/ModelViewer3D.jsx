@@ -231,8 +231,17 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
   const handleModelError = (error) => {
     console.error('3D Model Error:', error);
     const fileType = isLargeFile ? 'large 3D model' : '3D model';
-    const sizeInfo = isLargeFile ? 'File may be too large (>60MB) or corrupted.' : 'Please check if the file exists and is in a supported format.';
-    setError(`Failed to load ${fileType}: ${error.message || 'Unknown error'}. ${sizeInfo}`);
+    
+    let errorMessage = `Failed to load ${fileType}: ${error.message || 'Unknown error'}.`;
+    let suggestions = '';
+    
+    if (isLargeFile) {
+      suggestions = ' This file is 50-60MB. Try: 1) Refresh the page and wait longer, 2) Use a faster internet connection, 3) Use a device with more RAM, or 4) Download the model file directly instead.';
+    } else {
+      suggestions = ' Please check if the file exists and is in a supported format (.glb, .gltf, .obj).';
+    }
+    
+    setError(errorMessage + suggestions);
     setIsLoading(false);
   };
 
@@ -355,10 +364,28 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
       {/* Error State */}
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-950/90 z-20">
-          <div className="text-center px-4">
+          <div className="text-center px-4 max-w-md">
             <div className="text-red-500 text-4xl mb-4">⚠️</div>
             <p className="text-red-400 font-semibold mb-2">Failed to load model</p>
-            <p className="text-slate-400 text-sm">{error}</p>
+            <p className="text-slate-400 text-sm mb-4">{error}</p>
+            {isLargeFile && (
+              <div className="flex flex-col items-center gap-2">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg transition-colors"
+                >
+                  🔄 Try Again
+                </button>
+                {onDownload && (
+                  <button
+                    onClick={onDownload}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors"
+                  >
+                    📥 Download Model Instead
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}
