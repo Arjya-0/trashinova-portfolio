@@ -238,10 +238,10 @@ const TrashinovaApp = () => {
     {
       id: 1,
       title: "BICL Model",
-      description: "BICL Reactor – A closed-loop bioconversion system that uses microbes and fungi to turn waste into resources like bio-plastics, fertilizer, and energy precursors. It recycles water and nutrients, minimizes waste, and integrates with habitat systems for sustainable long-term missions. ⚠️ Large 3D model (50+ MB) - please be patient during loading.",
+      description: "BICL Reactor – A closed-loop bioconversion system that uses microbes and fungi to turn waste into resources like bio-plastics, fertilizer, and energy precursors. It recycles water and nutrients, minimizes waste, and integrates with habitat systems for sustainable long-term missions. ⚡ Large 3D model optimized for robust loading.",
       tags: ["3D", "ORCA", "BICL"],
       modelUrl: "/assets/models/container_control_module.glb",
-      metrics: { format: ".glb", category: "BICL Reactor", size: "50.5 MB" }
+      metrics: { format: ".glb", category: "BICL Reactor", size: "50-60MB" }
     },
     {
       id: 2,
@@ -257,37 +257,37 @@ const TrashinovaApp = () => {
     { 
       name: "Arjya Arindam", 
       email: "arjyaarindam@gmail.com",
-      role: "Data Analyst, Support & Web Development", 
-      bio: "Leading data analysis and web development initiatives for ORCA's Mars recycling systems.",
+      role: "Team Lead & Systems Architect", 
+      bio: "Leading ORCA systems architecture and project vision. Passionate about sustainable space exploration.",
       img: "/assets/team/arjya.jpg"
     },
     { 
-      name: "Paramita Aishwarja", 
-      email: "aishwarjaaa@gmail.com",
-      role: "Team Lead & Researcher", 
-      bio: "Leading research initiatives and coordinating team efforts for sustainable space exploration.",
-      img: "/assets/team/paramita.jpg"
+      name: "Debojite Chandra", 
+      email: "debojitechandra@gmail.com",
+      role: "Technical Lead & 3D Designer", 
+      bio: "Designing MIRU components and managing technical infrastructure for Mars recycling systems.",
+      img: "/assets/team/debojite.jpg"
     },
     { 
-      name: "Adiba Jafna", 
-      email: "adibajafna72@gmail.com",
-      role: "Script-Writer/Content Creator", 
-      bio: "Creating compelling content and documentation for ORCA's mission and technical specifications.",
-      img: "/assets/team/adiba.jpg"
+      name: "Rafsan Ahmed", 
+      email: "rafsan.ahmed@gmail.com",
+      role: "Research Coordinator", 
+      bio: "Research specialist in space material recycling and waste management technologies.",
+      img: "/assets/team/rafsan.jpg"
     },
     { 
-      name: "Farhan Mahmood", 
-      email: "kayerx7@gmail.com",
-      role: "CAD Designer & Prototyping", 
-      bio: "Designing and prototyping MIRU components and recycling system architecture.",
-      img: "/assets/team/farhan.jpg"
+      name: "Naimul Islam", 
+      email: "naimul.islam@gmail.com",
+      role: "Platform Engineer", 
+      bio: "Building ORCA's technical infrastructure and web portal development.",
+      img: "/assets/team/naimul.jpg"
     },
     { 
-      name: "Abid Hossain", 
-      email: "abidhossain3112078@gmail.com",
-      role: "Animator & Video Editor", 
-      bio: "Creating animations and video content to showcase ORCA's innovative recycling technologies.",
-      img: "/assets/team/abid.jpg"
+      name: "Sakib Rahman", 
+      email: "sakib.rahman@gmail.com",
+      role: "Data Analyst", 
+      bio: "Analyzing Mars habitat data and optimizing recycling algorithms for maximum efficiency.",
+      img: "/assets/team/sakib.jpg"
     }
   ];
 

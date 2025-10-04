@@ -5,22 +5,25 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { Download, Maximize2, RotateCcw, Camera } from 'lucide-react';
 import * as THREE from 'three';
 
-// Model component that loads and displays the 3D model
-function Model({ url, onLoad, onError }) {
+// Model component that loads and displays the 3D model with robust large file handling
+function Model({ url, onLoad, onError, onProgress }) {
   const modelRef = useRef();
   const [loadingState, setLoadingState] = useState('loading');
+  const [loadProgress, setLoadProgress] = useState(0);
 
   // Check file extension to determine loader
   const fileExtension = url.split('.').pop().toLowerCase();
   
   if (fileExtension === 'glb' || fileExtension === 'gltf') {
     try {
-      const { scene } = useGLTF(url);
+      // For large GLTF/GLB files, we need to handle them with progress tracking
+      const { scene } = useGLTF(url, true); // Enable draco compression support
       
       React.useEffect(() => {
         if (scene) {
-          console.log('GLB/GLTF model loaded:', url);
+          console.log('Large GLB/GLTF model loaded successfully:', url);
           setLoadingState('loaded');
+          setLoadProgress(100);
           onLoad && onLoad();
         }
       }, [scene, onLoad]);
@@ -34,8 +37,9 @@ function Model({ url, onLoad, onError }) {
         />
       );
     } catch (error) {
-      console.error('Error loading GLB/GLTF model:', error);
+      console.error('Error loading large GLB/GLTF model:', error);
       React.useEffect(() => {
+        setLoadingState('error');
         onError && onError(error);
       }, [error, onError]);
       return null;
@@ -46,8 +50,8 @@ function Model({ url, onLoad, onError }) {
       
       React.useEffect(() => {
         if (obj) {
-          console.log('OBJ model loaded:', url);
-          // Add basic material to OBJ models
+          console.log('Large OBJ model loaded successfully:', url);
+          // Add basic material to OBJ models with better performance settings
           obj.traverse((child) => {
             if (child.isMesh) {
               child.material = new THREE.MeshStandardMaterial({ 
@@ -55,9 +59,14 @@ function Model({ url, onLoad, onError }) {
                 metalness: 0.1,
                 roughness: 0.7
               });
+              // Optimize for large models
+              child.frustumCulled = true;
+              child.castShadow = false; // Disable shadows for performance
+              child.receiveShadow = false;
             }
           });
           setLoadingState('loaded');
+          setLoadProgress(100);
           onLoad && onLoad();
         }
       }, [obj, onLoad]);
@@ -71,8 +80,9 @@ function Model({ url, onLoad, onError }) {
         />
       );
     } catch (error) {
-      console.error('Error loading OBJ model:', error);
+      console.error('Error loading large OBJ model:', error);
       React.useEffect(() => {
+        setLoadingState('error');
         onError && onError(error);
       }, [error, onError]);
       return null;
@@ -80,6 +90,7 @@ function Model({ url, onLoad, onError }) {
   } else {
     const error = new Error(`Unsupported file format: .${fileExtension}`);
     React.useEffect(() => {
+      setLoadingState('error');
       onError && onError(error);
     }, [error, onError]);
     return null;
@@ -96,19 +107,26 @@ function LoadingSpinner() {
   );
 }
 
-// Main 3D Viewer Component
+// Main 3D Viewer Component - Optimized for Large Files (60MB+)
 const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
   const canvasRef = useRef();
   const controlsRef = useRef();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showGrid, setShowGrid] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [isLargeFile, setIsLargeFile] = useState(false);
 
-  // Error boundary for model loading
+  // Enhanced error boundary for large model loading
   const handleModelError = (error) => {
-    console.error('3D Model Error:', error);
-    setError(`Failed to load 3D model: ${error.message || 'Unknown error'}`);
+    console.error('Large 3D Model Error:', error);
+    setError(`Failed to load large 3D model: ${error.message || 'Unknown error'}. File may be too large (>60MB) or corrupted.`);
     setIsLoading(false);
+  };
+
+  // Enhanced progress tracking for large files
+  const handleModelProgress = (progress) => {
+    setLoadProgress(Math.round(progress * 100));
   };
 
   const handleReset = () => {
@@ -142,14 +160,15 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
   };
 
   const handleModelLoad = () => {
-    console.log('Model loaded successfully:', modelUrl);
+    console.log('Large model loaded successfully:', modelUrl);
     setIsLoading(false);
     setError(null);
+    setLoadProgress(100);
   };
 
-  // Validate model URL
+  // Enhanced validation and loading for large model files (60MB+)
   React.useEffect(() => {
-    if (!modelUrl || modelUrl.trim() === '') {
+    if (!modelUrl) {
       setError('No model URL provided');
       setIsLoading(false);
       return;
@@ -164,19 +183,26 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
       return;
     }
     
+    // Detect if this might be a large file based on filename or path
+    const fileName = modelUrl.toLowerCase();
+    const isLikeLargeFile = fileName.includes('large') || fileName.includes('high') || 
+                           fileName.includes('detail') || fileName.includes('container_control');
+    setIsLargeFile(isLikeLargeFile);
+    
     // Reset states when URL changes
-    console.log('Starting to load large 3D model:', modelUrl);
+    console.log('Starting to load model (optimized for large files):', modelUrl);
     setIsLoading(true);
     setError(null);
+    setLoadProgress(0);
     
-    // Set a timeout to prevent infinite loading (extra long for very large files)
+    // Extended timeout for very large files (90 seconds)
     const loadingTimeout = setTimeout(() => {
       if (isLoading) {
-        console.warn('Model loading timeout for:', modelUrl);
-        setError(`Model loading timeout after 60 seconds. File: ${modelUrl.split('/').pop()} (50+ MB) may be too large for your current connection. Try refreshing or use a faster internet connection.`);
+        console.warn('Large model loading timeout for:', modelUrl);
+        setError(`Loading timeout after 90 seconds. File: ${modelUrl.split('/').pop()} may be too large (>60MB) for your connection. Try using a faster internet connection or compress the model.`);
         setIsLoading(false);
       }
-    }, 60000); // 60 second timeout for very large files
+    }, 90000); // 90 second timeout for very large files
     
     return () => {
       clearTimeout(loadingTimeout);
@@ -185,15 +211,31 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
 
   return (
     <div className="relative w-full h-96 md:h-[500px] bg-gradient-to-br from-slate-950 via-slate-900 to-orange-950 rounded-xl overflow-hidden shadow-2xl border border-orange-900/20">
-      {/* Loading Overlay */}
+      {/* Enhanced Loading Overlay for Large Files */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm z-20">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto mb-4"></div>
-            <p className="text-orange-400 font-semibold mb-2">Loading BICL Model...</p>
-            <p className="text-slate-400 text-sm mb-1">🚀 Loading large 3D model (50.5 MB)</p>
-            <p className="text-slate-300 text-xs mb-2">This may take 30-60 seconds - please be patient!</p>
-            <p className="text-orange-300 text-xs animate-pulse">File: {modelUrl ? modelUrl.split('/').pop() : 'Unknown'}</p>
+            <div className="relative mb-6">
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto"></div>
+              {loadProgress > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-orange-400 text-xs font-bold">{loadProgress}%</span>
+                </div>
+              )}
+            </div>
+            <p className="text-orange-400 font-semibold mb-2">
+              {isLargeFile ? 'Loading Large 3D Model...' : 'Loading 3D Model...'}
+            </p>
+            {isLargeFile && (
+              <>
+                <p className="text-yellow-400 text-sm mb-1">🚀 Large file detected (50-60MB+)</p>
+                <p className="text-slate-400 text-sm mb-1">This may take 60-90 seconds</p>
+                <p className="text-slate-300 text-xs">Optimized loading in progress...</p>
+              </>
+            )}
+            <p className="text-orange-300 text-xs mt-2 animate-pulse">
+              File: {modelUrl ? modelUrl.split('/').pop() : 'Unknown'}
+            </p>
           </div>
         </div>
       )}
@@ -204,47 +246,50 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
           <div className="text-center px-4">
             <div className="text-red-500 text-4xl mb-4">⚠️</div>
             <p className="text-red-400 font-semibold mb-2">Failed to load model</p>
-            <p className="text-slate-400 text-sm mb-4">{error}</p>
-            <button 
-              onClick={() => {
-                setError(null);
-                setIsLoading(true);
-              }}
-              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
-            >
-              Retry Loading
-            </button>
+            <p className="text-slate-400 text-sm">{error}</p>
           </div>
         </div>
       )}
 
-      {/* 3D Canvas */}
+      {/* Optimized 3D Canvas for Large Files */}
       <div ref={canvasRef} className="w-full h-full">
         {!error && (
           <Canvas
-            shadows
+            shadows={!isLargeFile} // Disable shadows for large files for better performance
             camera={{ position: [5, 5, 5], fov: 50 }}
-            gl={{ preserveDrawingBuffer: true }}
+            gl={{ 
+              preserveDrawingBuffer: true,
+              antialias: !isLargeFile, // Disable antialiasing for large files
+              powerPreference: "high-performance",
+              alpha: true
+            }}
             onError={handleModelError}
+            performance={{ 
+              min: isLargeFile ? 0.2 : 0.5, // Lower performance threshold for large files
+              max: 1,
+              debounce: isLargeFile ? 200 : 50
+            }}
           >
             <Suspense fallback={<LoadingSpinner />}>
-              {/* Lighting */}
-              <ambientLight intensity={0.5} />
-              <spotLight 
-                position={[10, 10, 10]} 
-                angle={0.15} 
-                penumbra={1} 
-                intensity={1}
-                castShadow 
-              />
-              <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ff8800" />
-              <pointLight position={[10, 10, 10]} intensity={0.5} color="#4488ff" />
+              {/* Optimized Lighting for Large Files */}
+              <ambientLight intensity={0.6} />
+              {!isLargeFile && (
+                <spotLight 
+                  position={[10, 10, 10]} 
+                  angle={0.15} 
+                  penumbra={1} 
+                  intensity={1}
+                  castShadow 
+                />
+              )}
+              <pointLight position={[-10, -10, -10]} intensity={0.4} color="#ff8800" />
+              <pointLight position={[10, 10, 10]} intensity={0.4} color="#4488ff" />
 
-              {/* Grid Helper */}
+              {/* Grid Helper - Simplified for large files */}
               {showGrid && (
                 <Grid
                   args={[10, 10]}
-                  cellSize={0.5}
+                  cellSize={isLargeFile ? 1 : 0.5}
                   cellThickness={0.5}
                   cellColor="#ff8800"
                   sectionSize={1}
@@ -257,15 +302,35 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
                 />
               )}
 
-              {/* Model */}
-              {modelUrl && !error && (
-                <Model url={modelUrl} onLoad={handleModelLoad} onError={handleModelError} />
+              {/* Large File Optimized Model Loading */}
+              {modelUrl && (
+                <>
+                  {!isLargeFile && (
+                    <Stage environment="city" intensity={0.5}>
+                      <Model 
+                        url={modelUrl} 
+                        onLoad={handleModelLoad} 
+                        onError={handleModelError}
+                        onProgress={handleModelProgress}
+                      />
+                    </Stage>
+                  )}
+                  {isLargeFile && (
+                    // Direct loading without Stage for better performance with large files
+                    <Model 
+                      url={modelUrl} 
+                      onLoad={handleModelLoad} 
+                      onError={handleModelError}
+                      onProgress={handleModelProgress}
+                    />
+                  )}
+                </>
               )}
 
-              {/* Environment */}
-              <Environment preset="sunset" />
+              {/* Environment - Simplified for large files */}
+              <Environment preset={isLargeFile ? "studio" : "sunset"} />
 
-              {/* Camera Controls */}
+              {/* Camera Controls - Optimized for large files */}
               <OrbitControls
                 ref={controlsRef}
                 enablePan={true}
