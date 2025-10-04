@@ -82,9 +82,14 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
           // onError
           (error) => {
             console.error('Error loading GLB/GLTF model:', error);
+            console.error('Error details:', {
+              message: error.message,
+              type: error.constructor.name,
+              stack: error.stack
+            });
             setGlbError(error);
             setLoadingState('error');
-            onError && onError(error);
+            onError && onError(new Error(`GLB loading failed: ${error.message || 'Unknown error'}`));
           }
         );
       }).catch((error) => {
