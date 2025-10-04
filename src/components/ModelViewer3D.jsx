@@ -72,15 +72,25 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
       return null;
     }
   } else if (fileExtension === 'obj') {
-    try {
+    // OBJ files can be problematic, so we'll use a more robust approach
+    const [objModel, setObjModel] = useState(null);
+    const [objError, setObjError] = useState(null);
+
+    React.useEffect(() => {
       console.log('Loading OBJ file:', url);
-      const obj = useLoader(OBJLoader, url);
       
-      React.useEffect(() => {
-        if (obj) {
+      // Create a new OBJLoader instance
+      const loader = new OBJLoader();
+      
+      // Set up loading with proper error handling
+      loader.load(
+        url,
+        // onLoad
+        (object) => {
           console.log('OBJ model loaded successfully:', url);
-          // Add basic material to OBJ models with appropriate performance settings
-          obj.traverse((child) => {
+          
+          // Add basic material to OBJ models
+          object.traverse((child) => {
             if (child.isMesh) {
               child.material = new THREE.MeshStandardMaterial({ 
                 color: '#888888',
@@ -90,7 +100,7 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
               // Optimize based on file size
               child.frustumCulled = true;
               if (isLargeFile) {
-                child.castShadow = false; // Disable shadows for large files
+                child.castShadow = false;
                 child.receiveShadow = false;
               } else {
                 child.castShadow = true;
@@ -98,28 +108,50 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
               }
             }
           });
+          
+          setObjModel(object);
           setLoadingState('loaded');
           setLoadProgress(100);
           onLoad && onLoad();
+        },
+        // onProgress
+        (progress) => {
+          if (progress.lengthComputable) {
+            const percent = (progress.loaded / progress.total) * 100;
+            setLoadProgress(percent);
+            onProgress && onProgress(percent / 100);
+          }
+        },
+        // onError
+        (error) => {
+          console.error('Error loading OBJ model:', error);
+          setObjError(error);
+          setLoadingState('error');
+          onError && onError(error);
         }
-      }, [obj, onLoad, isLargeFile]);
+      );
+    }, [url, isLargeFile, onLoad, onError, onProgress]);
 
+    if (objError) {
+      React.useEffect(() => {
+        onError && onError(objError);
+      }, [objError, onError]);
+      return null;
+    }
+
+    if (objModel) {
       return (
         <primitive 
           ref={modelRef}
-          object={obj} 
+          object={objModel} 
           scale={0.01}
           position={[0, 0, 0]}
         />
       );
-    } catch (error) {
-      console.error('Error loading OBJ model:', error);
-      React.useEffect(() => {
-        setLoadingState('error');
-        onError && onError(error);
-      }, [error, onError]);
-      return null;
     }
+
+    // Still loading
+    return null;
   } else {
     const error = new Error(`Unsupported file format: .${fileExtension}`);
     React.useEffect(() => {
