@@ -1,4 +1,6 @@
 // Simple environment variable checker for Firebase config.
+// Load .env when invoked directly via Node (build/dev scripts)
+import 'dotenv/config';
 // Fails fast during dev/build if required vars are missing.
 const REQUIRED_KEYS = [
   'VITE_FIREBASE_API_KEY',

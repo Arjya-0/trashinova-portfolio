@@ -184,7 +184,7 @@ const ProjectDetailModal = ({ project, onClose }) => {
 // Main App Component
 const TrashinovaApp = () => {
   // Settings state (load from Firestore)
-  const [settings, setSettings] = useState({ tagline: '', about: '', siteTitle: 'Trashinova', heroDesc: '' });
+  const [settings, setSettings] = useState({ tagline: '', about: '', siteTitle: 'ORCA', heroDesc: '' });
   const [settingsLoading, setSettingsLoading] = useState(true);
   // Load settings from Firestore
   useEffect(() => {
@@ -229,6 +229,7 @@ const TrashinovaApp = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTag, setFilterTag] = useState('all');
+  const [activeTab, setActiveTab] = useState('3d-model');
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -245,11 +246,36 @@ const TrashinovaApp = () => {
   ];
 
   const teamMembers = [
-    { name: "Paramita Aishwarja", role: "Team Lead & Researcher", bio: "" },
-    { name: "Adiba Jafna", role: "Scriptwriter / Content Creator", bio: "" },
-    { name: "Franhan Mahmood", role: "CAD Designer & Prototyping", bio: "" },
-    { name: "Arjya Arindam", role: "Data Analyst, Support & Web development", bio: "" },
-    { name: "Abid Hossain", role: "Animator & Video Editor", bio: "" }
+    { 
+      name: "Member One", 
+      role: "Systems Lead", 
+      bio: "Leading ORCA systems architecture",
+      img: "/assets/team/member1.jpg"
+    },
+    { 
+      name: "Member Two", 
+      role: "Orbital Analytics", 
+      bio: "Specializing in debris tracking and analysis",
+      img: "/assets/team/member2.jpg"
+    },
+    { 
+      name: "Member Three", 
+      role: "Materials Specialist", 
+      bio: "Research in space material recycling",
+      img: "/assets/team/member3.jpg"
+    },
+    { 
+      name: "Member Four", 
+      role: "Platform Engineer", 
+      bio: "Building ORCA's technical infrastructure",
+      img: "/assets/team/member4.jpg"
+    },
+    { 
+      name: "Member Five", 
+      role: "Visualization Lead", 
+      bio: "Creating interactive 3D experiences",
+      img: "/assets/team/member5.jpg"
+    }
   ];
 
   useEffect(() => {
@@ -329,10 +355,10 @@ const TrashinovaApp = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-orange-500 via-red-600 to-yellow-500 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-orange-500/50">
-                T
+                O
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 bg-clip-text text-transparent">
-                Trashinova
+                ORCA
               </span>
             </div>
             
@@ -395,7 +421,7 @@ const TrashinovaApp = () => {
                    suppressContentEditableWarning={true}
                    onBlur={e => editMode && handleSettingsEdit('siteTitle', e.target.innerText)}
                  >
-                   {settings.siteTitle || 'Trashinova'}
+                   {settings.siteTitle || 'ORCA'}
                  </span>
              </h1>
              <p
@@ -421,15 +447,15 @@ const TrashinovaApp = () => {
                 className="group px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white rounded-lg font-semibold transition-all shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
               >
                 <span className="flex items-center gap-2">
-                  Explore Projects
+                  Explore ORCA
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </a>
               <a 
-                href="#demo"
+                href="https://github.com/"
                 className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white border-2 border-orange-700/50 rounded-lg font-semibold transition-all"
               >
-                View Demo
+                GitHub
               </a>
             </div>
           </div>
@@ -448,7 +474,7 @@ const TrashinovaApp = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
-              Our Projects
+              ORCA - Orbital Recycling and Circularity Architecture
             </h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
               Explore our collection of 3D models, datasets, and research findings
@@ -466,17 +492,81 @@ const TrashinovaApp = () => {
                 className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-orange-800/30 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
-            <select
-              value={filterTag}
-              onChange={(e) => setFilterTag(e.target.value)}
-              className="px-4 py-3 bg-slate-900 border border-orange-800/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-            >
-              <option value="all">All Tags</option>
-              <option value="3D">3D Models</option>
-              <option value="dataset">Datasets</option>
-              <option value="research">Research</option>
-              <option value="demo">Demos</option>
-            </select>
+          </div>
+
+          {/* ORCA Tabs Section */}
+          <div className="mb-8">
+            <div role="tablist" className="flex flex-wrap gap-2 mb-6 border-b border-slate-700">
+              {[
+                { id: '3d-model', label: '3D Object Model' },
+                { id: 'web-portal', label: 'Live Web Portal' },
+                { id: 'details', label: 'Details of ORCA' },
+                { id: 'features', label: 'Functions and Features' },
+                { id: 'roadmap', label: 'Roadmap' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  role="tab"
+                  aria-selected={activeTab === tab.id}
+                  aria-controls={`${tab.id}-panel`}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-2 font-medium transition-colors border-b-2 ${
+                    activeTab === tab.id
+                      ? 'text-orange-400 border-orange-400'
+                      : 'text-slate-400 border-transparent hover:text-orange-300 hover:border-orange-300'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Content Panels */}
+            <div className="min-h-[200px]">
+              {activeTab === '3d-model' && (
+                <div id="3d-model-panel" role="tabpanel" className="space-y-4">
+                  <select
+                    value={filterTag}
+                    onChange={(e) => setFilterTag(e.target.value)}
+                    className="px-4 py-3 bg-slate-900 border border-orange-800/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  >
+                    <option value="all">All Tags</option>
+                    <option value="3D">3D Models</option>
+                    <option value="dataset">Datasets</option>
+                    <option value="research">Research</option>
+                    <option value="demo">Demos</option>
+                  </select>
+                </div>
+              )}
+              
+              {activeTab === 'web-portal' && (
+                <div id="web-portal-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
+                  <h3 className="text-xl font-semibold text-orange-400 mb-3">Live Web Portal</h3>
+                  <p className="text-slate-300">Coming soon: real-time mission and recycling interface.</p>
+                </div>
+              )}
+              
+              {activeTab === 'details' && (
+                <div id="details-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
+                  <h3 className="text-xl font-semibold text-orange-400 mb-3">Details of ORCA</h3>
+                  <p className="text-slate-300">Technical architecture, subsystem interactions, and deployment model (placeholder).</p>
+                </div>
+              )}
+              
+              {activeTab === 'features' && (
+                <div id="features-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
+                  <h3 className="text-xl font-semibold text-orange-400 mb-3">Functions and Features</h3>
+                  <p className="text-slate-300">Catalog of ORCA capabilities (placeholder).</p>
+                </div>
+              )}
+              
+              {activeTab === 'roadmap' && (
+                <div id="roadmap-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
+                  <h3 className="text-xl font-semibold text-orange-400 mb-3">Roadmap</h3>
+                  <p className="text-slate-300">Planned milestones (placeholder).</p>
+                </div>
+              )}
+            </div>
           </div>
 
           {loading ? (
@@ -506,9 +596,9 @@ const TrashinovaApp = () => {
               Our Team
             </h2>
             <p className="text-xl text-slate-400">
-              Meet the innovators behind Trashinova
+              Meet the innovators behind ORCA
             </p>
-            {/* About Team Trashinova section */}
+            {/* About Team ORCA section */}
              {settings && (
                <div
                  className="mt-6 max-w-2xl mx-auto text-slate-300 text-lg bg-slate-900/60 p-6 rounded-xl border border-orange-800/30"
@@ -516,16 +606,27 @@ const TrashinovaApp = () => {
                  suppressContentEditableWarning={true}
                  onBlur={e => editMode && handleSettingsEdit('about', e.target.innerText)}
                >
-                 {settings.about || 'About Team Trashinova...'}
+                 {settings.about || 'ORCA (Orbital Recycling and Circularity Architecture) is an initiative to identify, classify, and repurpose orbital debris through intelligent modeling, material tracing, and autonomous recovery planning. This platform unifies data, simulation, and operational tooling to accelerate sustainable space infrastructure.'}
                </div>
              )}
           </div>
 
-           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
              {teamMembers.map((member, i) => (
                <div key={i} className="text-center group">
-                 <div className="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-orange-500 via-red-600 to-yellow-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow">
-                   {member.name.split(' ').map(n => n[0]).join('')}
+                 <div className="w-32 h-32 mx-auto mb-4 relative">
+                   <img 
+                     src={member.img} 
+                     alt={`Photo of ${member.name}`}
+                     className="w-full h-full rounded-full object-cover shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow"
+                     onError={(e) => {
+                       e.target.style.display = 'none';
+                       e.target.nextSibling.style.display = 'flex';
+                     }}
+                   />
+                   <div className="w-full h-full bg-gradient-to-br from-orange-500 via-red-600 to-yellow-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow hidden">
+                     {member.name.split(' ').map(n => n[0]).join('')}
+                   </div>
                  </div>
                  <h3
                    className="text-xl font-bold mb-1 text-white"
@@ -551,6 +652,117 @@ const TrashinovaApp = () => {
         </div>
       </section>
 
+      {/* Research Section */}
+      <section id="research" className="py-20 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+              Research
+            </h2>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+              Advancing the science of orbital debris management and space sustainability
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-slate-800/50 p-6 rounded-lg border border-orange-800/30">
+              <h3 className="text-xl font-semibold text-orange-400 mb-3">Overview</h3>
+              <p className="text-slate-300">Our research focuses on developing innovative approaches to identify, track, and repurpose orbital debris for sustainable space exploration.</p>
+            </div>
+
+            <div className="bg-slate-800/50 p-6 rounded-lg border border-orange-800/30">
+              <h3 className="text-xl font-semibold text-orange-400 mb-3">Publications</h3>
+              <ul className="text-slate-300 space-y-2">
+                <li>• Autonomous Debris Classification Systems (2024)</li>
+                <li>• Material Recovery in Low Earth Orbit (2024)</li>
+                <li>• Predictive Orbital Decay Models (2023)</li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-800/50 p-6 rounded-lg border border-orange-800/30">
+              <h3 className="text-xl font-semibold text-orange-400 mb-3">Open Problems</h3>
+              <ul className="text-slate-300 space-y-2">
+                <li>• Micro-debris tracking accuracy</li>
+                <li>• Cost-effective retrieval mechanisms</li>
+                <li>• International debris sharing protocols</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+              Contact Us
+            </h2>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+              Get in touch to collaborate on orbital sustainability initiatives
+            </p>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-slate-900/50 p-8 rounded-lg border border-orange-800/30">
+              <form className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={6}
+                    className="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    placeholder="Tell us about your project or collaboration idea..."
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white rounded-lg font-semibold transition-all shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
+                >
+                  Send Message
+                </button>
+              </form>
+
+              <div className="mt-6 pt-6 border-t border-slate-700 text-center">
+                <p className="text-slate-400">
+                  Or reach us directly at{' '}
+                  <a href="mailto:contact@placeholder.domain" className="text-orange-400 hover:text-orange-300 transition-colors">
+                    contact@placeholder.domain
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
 
 
@@ -560,12 +772,12 @@ const TrashinovaApp = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-slate-500">
-              © 2024 Trashinova. Licensed under MIT License.
+              © 2024 ORCA. Licensed under MIT License.
             </div>
             <div className="flex items-center gap-6 text-sm text-slate-500">
               <a href="#" className="hover:text-orange-400 transition-colors">Privacy</a>
               <a href="#" className="hover:text-orange-400 transition-colors">Terms</a>
-              <a href="https://github.com/trashinova" className="hover:text-orange-400 transition-colors">GitHub</a>
+              <a href="https://github.com/orca" className="hover:text-orange-400 transition-colors">GitHub</a>
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 Deployed on Firebase
