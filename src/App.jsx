@@ -255,34 +255,39 @@ const TrashinovaApp = () => {
 
   const teamMembers = [
     { 
-      name: "Member One", 
-      role: "Systems Lead", 
-      bio: "Leading ORCA systems architecture",
-      img: "/assets/team/member1.jpg"
+      name: "Arjya Arindam", 
+      email: "arjyaarindam@gmail.com",
+      role: "Team Lead & Systems Architect", 
+      bio: "Leading ORCA systems architecture and project vision. Passionate about sustainable space exploration.",
+      img: "/assets/team/arjya.jpg"
     },
     { 
-      name: "Member Two", 
-      role: "Orbital Analytics", 
-      bio: "Specializing in debris tracking and analysis",
-      img: "/assets/team/member2.jpg"
+      name: "Debojite Chandra", 
+      email: "debojitechandra@gmail.com",
+      role: "Technical Lead & 3D Designer", 
+      bio: "Designing MIRU components and managing technical infrastructure for Mars recycling systems.",
+      img: "/assets/team/debojite.jpg"
     },
     { 
-      name: "Member Three", 
-      role: "Materials Specialist", 
-      bio: "Research in space material recycling",
-      img: "/assets/team/member3.jpg"
+      name: "Rafsan Ahmed", 
+      email: "rafsan.ahmed@gmail.com",
+      role: "Research Coordinator", 
+      bio: "Research specialist in space material recycling and waste management technologies.",
+      img: "/assets/team/rafsan.jpg"
     },
     { 
-      name: "Member Four", 
+      name: "Naimul Islam", 
+      email: "naimul.islam@gmail.com",
       role: "Platform Engineer", 
-      bio: "Building ORCA's technical infrastructure",
-      img: "/assets/team/member4.jpg"
+      bio: "Building ORCA's technical infrastructure and web portal development.",
+      img: "/assets/team/naimul.jpg"
     },
     { 
-      name: "Member Five", 
-      role: "Visualization Lead", 
-      bio: "Creating interactive 3D experiences",
-      img: "/assets/team/member5.jpg"
+      name: "Sakib Rahman", 
+      email: "sakib.rahman@gmail.com",
+      role: "Data Analyst", 
+      bio: "Analyzing Mars habitat data and optimizing recycling algorithms for maximum efficiency.",
+      img: "/assets/team/sakib.jpg"
     }
   ];
 
@@ -1200,6 +1205,14 @@ const TrashinovaApp = () => {
                    suppressContentEditableWarning={true}
                    onBlur={e => editMode && handleTeamEdit(i, 'role', e.target.innerText)}
                  >{member.role}</p>
+                 {member.email && (
+                   <p className="text-sm text-blue-400 mb-2 hover:text-blue-300 transition-colors">
+                     <a href={`mailto:${member.email}`} className="flex items-center justify-center gap-1">
+                       <Mail className="w-3 h-3" />
+                       {member.email}
+                     </a>
+                   </p>
+                 )}
                  <p
                    className="text-sm text-slate-400"
                    contentEditable={editMode}
