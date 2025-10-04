@@ -149,8 +149,8 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
 
   // Validate model URL
   React.useEffect(() => {
-    if (!modelUrl) {
-      setError('No model URL provided');
+    if (!modelUrl || modelUrl.trim() === '') {
+      setError('3D model temporarily unavailable. This model file is too large (50+ MB) for web viewing. Please use a compressed version under 10MB for optimal performance.');
       setIsLoading(false);
       return;
     }
@@ -172,10 +172,10 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
     const loadingTimeout = setTimeout(() => {
       if (isLoading) {
         console.warn('Model loading timeout for:', modelUrl);
-        setError('Model loading timeout. The file may be too large (>50MB), corrupted, or the server is slow. Consider using a smaller/compressed model file.');
+        setError(`Model loading timeout. File: ${modelUrl.split('/').pop()} may be too large (>50MB), corrupted, or the server is slow. Consider compressing the model or using a smaller file format.`);
         setIsLoading(false);
       }
-    }, 30000); // 30 second timeout for large files
+    }, 45000); // 45 second timeout for very large files
     
     return () => {
       clearTimeout(loadingTimeout);
@@ -190,7 +190,8 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto mb-4"></div>
             <p className="text-orange-400 font-semibold mb-2">Loading 3D Model...</p>
-            <p className="text-slate-400 text-sm">Large files (50MB+) may take 30+ seconds</p>
+            <p className="text-slate-400 text-sm mb-1">Large files (50MB+) may take 30-45 seconds</p>
+            <p className="text-slate-300 text-xs">File: {modelUrl ? modelUrl.split('/').pop() : 'Unknown'}</p>
           </div>
         </div>
       )}

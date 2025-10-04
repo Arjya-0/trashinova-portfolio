@@ -238,10 +238,10 @@ const TrashinovaApp = () => {
     {
       id: 1,
       title: "BICL Model",
-      description: "BICL Reactor – A closed-loop bioconversion system that uses microbes and fungi to turn waste into resources like bio-plastics, fertilizer, and energy precursors. It recycles water and nutrients, minimizes waste, and integrates with habitat systems for sustainable long-term missions.",
+      description: "BICL Reactor – A closed-loop bioconversion system that uses microbes and fungi to turn waste into resources like bio-plastics, fertilizer, and energy precursors. It recycles water and nutrients, minimizes waste, and integrates with habitat systems for sustainable long-term missions. Note: Original 3D model is 50+ MB - a compressed version is recommended for web viewing.",
       tags: ["3D", "ORCA", "BICL"],
-      modelUrl: "/assets/models/container_control_module.glb",
-      metrics: { format: ".glb", category: "BICL Reactor" }
+      modelUrl: "", // Temporarily disabled due to large file size
+      metrics: { format: ".glb", category: "BICL Reactor", size: "50.5 MB", status: "Large file - loading disabled" }
     },
     {
       id: 2,
