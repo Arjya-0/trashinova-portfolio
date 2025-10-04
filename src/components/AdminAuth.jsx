@@ -23,7 +23,10 @@ const AdminAuth = ({ children }) => {
         // Emergency override for known admin emails
         const adminEmails = [
           "arjyaarindam@gmail.com",
-          "paramita.aishwarja@example.com" // Add other admin emails here
+          "aishwarjaaa@gmail.com",
+          "adibajafna72@gmail.com",
+          "kayerx7@gmail.com",
+          "abidhossain3112078@gmail.com"
         ];
         
         if (adminEmails.includes(currentUser.email) || currentUser.uid === "rd5VwwDKPvOUFB4HupzFKTC2HND2") {
