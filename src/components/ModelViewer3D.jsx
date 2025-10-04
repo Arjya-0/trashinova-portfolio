@@ -6,19 +6,21 @@ import { Download, Maximize2, RotateCcw, Camera } from 'lucide-react';
 import * as THREE from 'three';
 
 // Model component that loads and displays the 3D model
-function Model({ url, onLoad }) {
+function Model({ url, onLoad, onError }) {
   const modelRef = useRef();
-  const [error, setError] = useState(null);
+  const [loadingState, setLoadingState] = useState('loading');
 
-  try {
-    // Check file extension to determine loader
-    const fileExtension = url.split('.').pop().toLowerCase();
-    
-    if (fileExtension === 'glb' || fileExtension === 'gltf') {
+  // Check file extension to determine loader
+  const fileExtension = url.split('.').pop().toLowerCase();
+  
+  if (fileExtension === 'glb' || fileExtension === 'gltf') {
+    try {
       const { scene } = useGLTF(url);
       
       React.useEffect(() => {
         if (scene) {
+          console.log('GLB/GLTF model loaded:', url);
+          setLoadingState('loaded');
           onLoad && onLoad();
         }
       }, [scene, onLoad]);
@@ -31,11 +33,20 @@ function Model({ url, onLoad }) {
           position={[0, 0, 0]}
         />
       );
-    } else if (fileExtension === 'obj') {
+    } catch (error) {
+      console.error('Error loading GLB/GLTF model:', error);
+      React.useEffect(() => {
+        onError && onError(error);
+      }, [error, onError]);
+      return null;
+    }
+  } else if (fileExtension === 'obj') {
+    try {
       const obj = useLoader(OBJLoader, url);
       
       React.useEffect(() => {
         if (obj) {
+          console.log('OBJ model loaded:', url);
           // Add basic material to OBJ models
           obj.traverse((child) => {
             if (child.isMesh) {
@@ -46,6 +57,7 @@ function Model({ url, onLoad }) {
               });
             }
           });
+          setLoadingState('loaded');
           onLoad && onLoad();
         }
       }, [obj, onLoad]);
@@ -54,17 +66,22 @@ function Model({ url, onLoad }) {
         <primitive 
           ref={modelRef}
           object={obj} 
-          scale={0.1}
+          scale={0.01}
           position={[0, 0, 0]}
         />
       );
-    } else {
-      throw new Error('Unsupported file format');
+    } catch (error) {
+      console.error('Error loading OBJ model:', error);
+      React.useEffect(() => {
+        onError && onError(error);
+      }, [error, onError]);
+      return null;
     }
-  } catch (err) {
+  } else {
+    const error = new Error(`Unsupported file format: .${fileExtension}`);
     React.useEffect(() => {
-      setError(err.message);
-    }, [err]);
+      onError && onError(error);
+    }, [error, onError]);
     return null;
   }
 }
@@ -125,6 +142,7 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
   };
 
   const handleModelLoad = () => {
+    console.log('Model loaded successfully:', modelUrl);
     setIsLoading(false);
     setError(null);
   };
@@ -149,6 +167,19 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
     // Reset states when URL changes
     setIsLoading(true);
     setError(null);
+    
+    // Set a timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      if (isLoading) {
+        console.warn('Model loading timeout for:', modelUrl);
+        setError('Model loading timeout. The file may be too large or corrupted.');
+        setIsLoading(false);
+      }
+    }, 15000); // 15 second timeout
+    
+    return () => {
+      clearTimeout(loadingTimeout);
+    };
   }, [modelUrl]);
 
   return (
@@ -169,7 +200,16 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
           <div className="text-center px-4">
             <div className="text-red-500 text-4xl mb-4">⚠️</div>
             <p className="text-red-400 font-semibold mb-2">Failed to load model</p>
-            <p className="text-slate-400 text-sm">{error}</p>
+            <p className="text-slate-400 text-sm mb-4">{error}</p>
+            <button 
+              onClick={() => {
+                setError(null);
+                setIsLoading(true);
+              }}
+              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
+            >
+              Retry Loading
+            </button>
           </div>
         </div>
       )}
@@ -214,10 +254,8 @@ const ModelViewer3D = ({ modelUrl, modelName = "Model", onDownload }) => {
               )}
 
               {/* Model */}
-              {modelUrl && (
-                <Stage environment="city" intensity={0.5}>
-                  <Model url={modelUrl} onLoad={handleModelLoad} />
-                </Stage>
+              {modelUrl && !error && (
+                <Model url={modelUrl} onLoad={handleModelLoad} onError={handleModelError} />
               )}
 
               {/* Environment */}
