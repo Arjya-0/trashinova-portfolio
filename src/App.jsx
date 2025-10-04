@@ -366,7 +366,6 @@ const TrashinovaApp = () => {
               <a href="#home" className="hover:text-orange-400 transition-colors">Home</a>
               <a href="#projects" className="hover:text-orange-400 transition-colors">Projects</a>
               <a href="#team" className="hover:text-orange-400 transition-colors">Team</a>
-              <a href="#research" className="hover:text-orange-400 transition-colors">Research</a>
               <a href="#contact" className="hover:text-orange-400 transition-colors">Contact</a>
               <a 
                 href="/admin" 
@@ -391,7 +390,6 @@ const TrashinovaApp = () => {
               <a href="#home" className="block py-2 hover:text-orange-400 transition-colors">Home</a>
               <a href="#projects" className="block py-2 hover:text-orange-400 transition-colors">Projects</a>
               <a href="#team" className="block py-2 hover:text-orange-400 transition-colors">Team</a>
-              <a href="#research" className="block py-2 hover:text-orange-400 transition-colors">Research</a>
               <a href="#contact" className="block py-2 hover:text-orange-400 transition-colors">Contact</a>
               <a href="/admin" className="block py-2 text-orange-400 font-semibold">Admin Panel</a>
             </div>
@@ -702,16 +700,422 @@ const TrashinovaApp = () => {
               )}
               
               {activeTab === 'features' && (
-                <div id="features-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
-                  <h3 className="text-xl font-semibold text-orange-400 mb-3">Functions and Features</h3>
-                  <p className="text-slate-300">Catalog of ORCA capabilities (placeholder).</p>
+                <div id="features-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg space-y-6">
+                  <h3 className="text-2xl font-semibold text-orange-400 mb-4">Functions and Features</h3>
+                  
+                  {/* MIRU Core */}
+                  <div className="bg-gradient-to-r from-orange-900/20 to-red-900/20 p-6 rounded-lg border border-orange-500/20">
+                    <h4 className="text-xl font-bold text-orange-300 mb-4 flex items-center gap-2">
+                      <Box className="w-6 h-6" />
+                      1. MIRU Core
+                    </h4>
+                    
+                    <div className="space-y-4">
+                      <div className="bg-slate-700/30 p-4 rounded-lg">
+                        <h5 className="font-bold text-orange-200 mb-2">Waste Intake & Classification:</h5>
+                        <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                          <li>Automated multi-sensor scanning (visual, spectral, density)</li>
+                          <li>Intelligent sorting of plastics, metals, composites, and organics</li>
+                          <li>Detection of contamination or hazardous materials</li>
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-slate-700/30 p-4 rounded-lg">
+                        <h5 className="font-bold text-orange-200 mb-2">Mechanical Processing:</h5>
+                        <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                          <li>Shredding, grinding, pulverizing, and compaction into modular blocks</li>
+                          <li>Particle size adjustment for optimized bio-processing</li>
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-slate-700/30 p-4 rounded-lg">
+                        <h5 className="font-bold text-orange-200 mb-2">Adaptive Workflow:</h5>
+                        <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                          <li>Dynamic adjustment of processing strategy based on incoming waste composition and volume</li>
+                          <li>Prioritization of critical or high-value waste streams</li>
+                        </ul>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-orange-200 mb-2">Modular Integration:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Seamless interfacing with BICL reactor, storage units, or future modules</li>
+                          </ul>
+                        </div>
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-orange-200 mb-2">Monitoring & Diagnostics:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Continuous sensor tracking of system efficiency and potential failures</li>
+                            <li>Predictive maintenance alerts to ensure uninterrupted operation</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* BICL Reactor */}
+                  <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 p-6 rounded-lg border border-green-500/20">
+                    <h4 className="text-xl font-bold text-green-300 mb-4 flex items-center gap-2">
+                      <Zap className="w-6 h-6" />
+                      2. BICL Reactor
+                    </h4>
+                    
+                    <div className="space-y-4">
+                      <div className="bg-slate-700/30 p-4 rounded-lg">
+                        <h5 className="font-bold text-green-200 mb-2">Bio-Conversion:</h5>
+                        <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                          <li>Engineered microbes and fungi convert processed waste into reusable compounds</li>
+                          <li>Capable of processing both organic and select inorganic materials</li>
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-slate-700/30 p-4 rounded-lg">
+                        <h5 className="font-bold text-green-200 mb-2">Closed-Loop Resource Management:</h5>
+                        <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                          <li>Recycling of water, nutrients, and byproducts for habitat sustainability</li>
+                          <li>Minimization of overall waste footprint</li>
+                        </ul>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-green-200 mb-2">Real-Time Monitoring & Feedback:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Sensors track microbial health, conversion efficiency, and byproduct quality</li>
+                            <li>Adaptive regulation of temperature, airflow, and moisture levels</li>
+                          </ul>
+                        </div>
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-green-200 mb-2">Integration with Habitat Systems:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Directing usable byproducts for in-situ resource utilization, including bio-plastics, fertilizer, and energy precursors</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dual Hydraulic Press */}
+                  <div className="bg-gradient-to-r from-blue-900/20 to-cyan-900/20 p-6 rounded-lg border border-blue-500/20">
+                    <h4 className="text-xl font-bold text-blue-300 mb-4 flex items-center gap-2">
+                      <Database className="w-6 h-6" />
+                      3. Dual Hydraulic Press
+                    </h4>
+                    
+                    <div className="space-y-4">
+                      <div className="bg-slate-700/30 p-4 rounded-lg">
+                        <h5 className="font-bold text-blue-200 mb-2">High-Efficiency Compaction:</h5>
+                        <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                          <li>Reduces waste volume by 50–70%, optimized for Martian gravity</li>
+                          <li>Standardizes waste modules for storage, transport, or bio-processing</li>
+                        </ul>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-blue-200 mb-2">Automated Operation:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Fully integrated with MIRU processing cycles</li>
+                            <li>Safety sensors prevent overpressure and misalignment</li>
+                          </ul>
+                        </div>
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-blue-200 mb-2">Energy Optimization:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Intelligent hydraulic control minimizes energy consumption per cycle</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Earth Portal */}
+                  <div className="bg-gradient-to-r from-purple-900/20 to-indigo-900/20 p-6 rounded-lg border border-purple-500/20">
+                    <h4 className="text-xl font-bold text-purple-300 mb-4 flex items-center gap-2">
+                      <ExternalLink className="w-6 h-6" />
+                      4. Earth Portal (Website)
+                    </h4>
+                    
+                    <div className="space-y-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-purple-200 mb-2">Live Monitoring:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Real-time streaming of waste flows, processing stages, and module status</li>
+                          </ul>
+                        </div>
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-purple-200 mb-2">Control & Suggestion Interface:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Remote operators can propose adjustments or trigger automated protocols</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-purple-200 mb-2">Data Logging & Research:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Long-term analytics for waste processing efficiency, microbial health, and resource utilization</li>
+                            <li>Public awareness & collaboration: Educational visualization of the Mars recycling system</li>
+                          </ul>
+                        </div>
+                        <div className="bg-slate-700/30 p-4 rounded-lg">
+                          <h5 className="font-bold text-purple-200 mb-2">Community Engagement:</h5>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Gamified elements allow Earth users to contribute virtually and track system impact</li>
+                            <li>Enables scientific collaboration and community engagement</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Future Features */}
+                  <div className="bg-gradient-to-r from-yellow-900/20 to-amber-900/20 p-6 rounded-lg border border-yellow-500/20">
+                    <h4 className="text-xl font-bold text-yellow-300 mb-4 flex items-center gap-2">
+                      <Star className="w-6 h-6" />
+                      5. Horizon/Future-Ready Features
+                    </h4>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-3">
+                        <div className="bg-slate-700/30 p-3 rounded">
+                          <h5 className="font-bold text-yellow-200 text-sm mb-1">Nano-Recycler Swarm:</h5>
+                          <p className="text-slate-300 text-xs">Autonomous microbots targeting hard-to-reach or dispersed waste</p>
+                        </div>
+                        <div className="bg-slate-700/30 p-3 rounded">
+                          <h5 className="font-bold text-yellow-200 text-sm mb-1">AI-Driven Optimization:</h5>
+                          <p className="text-slate-300 text-xs">Machine learning predicts waste surges, schedules modules, and minimizes energy consumption</p>
+                        </div>
+                        <div className="bg-slate-700/30 p-3 rounded">
+                          <h5 className="font-bold text-yellow-200 text-sm mb-1">Advanced Bio-Engineering:</h5>
+                          <p className="text-slate-300 text-xs">Genetically tailored microbes and fungi optimized for Martian conditions</p>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="bg-slate-700/30 p-3 rounded">
+                          <h5 className="font-bold text-yellow-200 text-sm mb-1">Brain Interface:</h5>
+                          <p className="text-slate-300 text-xs">Neural control for direct human interaction with ORCA modules via neural networks</p>
+                        </div>
+                        <div className="bg-slate-700/30 p-3 rounded">
+                          <h5 className="font-bold text-yellow-200 text-sm mb-1">Interplanetary Waste Accord:</h5>
+                          <p className="text-slate-300 text-xs">Global collaboration protocols for standardized space waste management</p>
+                        </div>
+                        <div className="bg-slate-700/30 p-3 rounded">
+                          <h5 className="font-bold text-yellow-200 text-sm mb-1">Bio-Artistic Weaving:</h5>
+                          <p className="text-slate-300 text-xs">Transformation of recycled materials into functional and artistic habitat structures</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
               
               {activeTab === 'roadmap' && (
-                <div id="roadmap-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg">
-                  <h3 className="text-xl font-semibold text-orange-400 mb-3">Roadmap</h3>
-                  <p className="text-slate-300">Planned milestones (placeholder).</p>
+                <div id="roadmap-panel" role="tabpanel" className="p-6 bg-slate-800/50 rounded-lg space-y-6">
+                  <h3 className="text-2xl font-semibold text-orange-400 mb-4">ORCA Project Roadmap</h3>
+                  
+                  {/* Phase-based Roadmap */}
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-bold text-blue-300 mb-4">Development Phases</h4>
+                    
+                    {/* Phase 0 */}
+                    <div className="bg-gradient-to-r from-slate-800/40 to-slate-700/40 p-6 rounded-lg border-l-4 border-orange-400">
+                      <h5 className="text-lg font-bold text-orange-300 mb-3">Phase 0 — Conceptual Foundation (Now)</h5>
+                      <p className="text-slate-300 mb-3"><strong>Objective:</strong> Define the vision, modules, and system goals.</p>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h6 className="font-bold text-orange-200 mb-2">Key Actions:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Map Mars waste types and volumes</li>
+                            <li>Define recycling goals: reuse, repurpose, reduce</li>
+                            <li>Split ORCA into core modules</li>
+                            <li>Identify data sources and simulations for feasibility</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h6 className="font-bold text-orange-200 mb-2">Core Modules:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>MIRU Core (modular recycling ecosystem)</li>
+                            <li>BICL Reactor (bio-inspired closed loop)</li>
+                            <li>Dual Hydraulic Press (mechanical compaction)</li>
+                            <li>Astronaut UI (real-time control)</li>
+                            <li>Earth Portal (remote monitoring & awareness)</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-3">
+                        <h6 className="font-bold text-orange-200 mb-2">Deliverables:</h6>
+                        <p className="text-slate-300 text-sm">Concept diagrams, preliminary system architecture, initial feasibility report</p>
+                      </div>
+                    </div>
+
+                    {/* Phase 1 */}
+                    <div className="bg-gradient-to-r from-slate-800/40 to-slate-700/40 p-6 rounded-lg border-l-4 border-green-400">
+                      <h5 className="text-lg font-bold text-green-300 mb-3">Phase 1 — Feasibility & Prototype</h5>
+                      <p className="text-slate-300 mb-3"><strong>Objective:</strong> Build working prototypes for each module.</p>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h6 className="font-bold text-green-200 mb-2">Key Actions:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>MIRU Modules: Design and 3D print compact functional models</li>
+                            <li>BICL Reactor: Test microbial efficiency in Earth analog conditions</li>
+                            <li>Hydraulic Press: Prototype press mechanics for Martian gravity</li>
+                            <li>UI Development: Astronaut dashboard + Earth portal basics</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h6 className="font-bold text-green-200 mb-2">Testing:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Conduct simulations for energy use</li>
+                            <li>Test waste throughput capabilities</li>
+                            <li>Validate safety protocols</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-3">
+                        <h6 className="font-bold text-green-200 mb-2">Deliverables:</h6>
+                        <p className="text-slate-300 text-sm">Prototype videos, functional demos, feasibility report</p>
+                      </div>
+                    </div>
+
+                    {/* Phase 2 */}
+                    <div className="bg-gradient-to-r from-slate-800/40 to-slate-700/40 p-6 rounded-lg border-l-4 border-blue-400">
+                      <h5 className="text-lg font-bold text-blue-300 mb-3">Phase 2 — Integrated Testing</h5>
+                      <p className="text-slate-300 mb-3"><strong>Objective:</strong> Merge modules into a single ORCA system for coordinated operation.</p>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h6 className="font-bold text-blue-200 mb-2">Key Actions:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Synchronize MIRU + BICL + Press modules</li>
+                            <li>Implement astronaut UI controls for real-time optimization</li>
+                            <li>Test full waste flow: collection → compaction → bio-recycling → repurpose</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h6 className="font-bold text-blue-200 mb-2">Metrics:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Measure efficiency</li>
+                            <li>Track processing time</li>
+                            <li>Monitor volume reduction</li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-3">
+                        <h6 className="font-bold text-blue-200 mb-2">Deliverables:</h6>
+                        <p className="text-slate-300 text-sm">Integrated system demo, data dashboard, performance metrics</p>
+                      </div>
+                    </div>
+
+                    {/* Phase 3 */}
+                    <div className="bg-gradient-to-r from-slate-800/40 to-slate-700/40 p-6 rounded-lg border-l-4 border-purple-400">
+                      <h5 className="text-lg font-bold text-purple-300 mb-3">Phase 3 — Optimization & Simulation</h5>
+                      <p className="text-slate-300 mb-3"><strong>Objective:</strong> Fine-tune system for Mars environment.</p>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <h6 className="font-bold text-purple-200 mb-2">Key Actions:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Run Mars gravity & atmosphere simulations</li>
+                            <li>Optimize energy consumption and automation</li>
+                            <li>Incorporate predictive AI for maintenance and scheduling</li>
+                            <li>Conduct iterative UI/UX improvements based on astronaut workflow</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h6 className="font-bold text-purple-200 mb-2">Deliverables:</h6>
+                          <ul className="text-slate-300 text-sm space-y-1 list-disc list-inside">
+                            <li>Optimized system specs</li>
+                            <li>Simulation results</li>
+                            <li>Astronaut training manual</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Timeline Roadmap */}
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-bold text-cyan-300 mb-4">Timeline Roadmap</h4>
+                    
+                    {/* 2025 */}
+                    <div className="bg-gradient-to-r from-orange-900/20 to-red-900/20 p-6 rounded-lg border border-orange-500/20">
+                      <h5 className="text-lg font-bold text-orange-300 mb-3">2025 — Foundation & Prototype</h5>
+                      <ul className="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                        <li>Launch conceptual designs and system architecture</li>
+                        <li>Develop initial prototypes of MIRU Core and BICL Reactor</li>
+                        <li>Set up a functional Earth Portal for remote monitoring and data visualization</li>
+                        <li>Establish partnerships, mentorship channels, and secure community/scientific contributions</li>
+                        <li>Conduct initial feasibility tests in Earth analog environments</li>
+                      </ul>
+                    </div>
+
+                    {/* 2026 */}
+                    <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 p-6 rounded-lg border border-green-500/20">
+                      <h5 className="text-lg font-bold text-green-300 mb-3">2026 — Integrated Testing & Optimization</h5>
+                      <ul className="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                        <li>Merge MIRU, BICL, and Dual Hydraulic Press into a coordinated system</li>
+                        <li>Test full waste flow: collection → compaction → bio-recycling → repurpose</li>
+                        <li>Implement predictive AI for workflow optimization</li>
+                        <li>Optimize processing parameters and energy efficiency based on test data</li>
+                        <li>Expand Earth Portal capabilities: real-time monitoring, data logging, and collaborative research interface</li>
+                      </ul>
+                    </div>
+
+                    {/* 2027 */}
+                    <div className="bg-gradient-to-r from-blue-900/20 to-cyan-900/20 p-6 rounded-lg border border-blue-500/20">
+                      <h5 className="text-lg font-bold text-blue-300 mb-3">2027 — Advanced Prototype Deployment & Research</h5>
+                      <ul className="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                        <li>Deploy ORCA prototypes in extended analog Mars habitats</li>
+                        <li>Introduce adaptive automation and modular upgrades based on test results</li>
+                        <li>Collect detailed performance metrics: efficiency, throughput, volume reduction</li>
+                        <li>Begin feasibility studies for Nano-Recycler Swarm and advanced microbial strains</li>
+                        <li>Strengthen mentorship and inter-institutional partnerships for future scaling</li>
+                      </ul>
+                    </div>
+
+                    {/* 2028 */}
+                    <div className="bg-gradient-to-r from-purple-900/20 to-indigo-900/20 p-6 rounded-lg border border-purple-500/20">
+                      <h5 className="text-lg font-bold text-purple-300 mb-3">2028 — Horizon Technologies & Visionary Expansion</h5>
+                      <ul className="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                        <li>Integrate Nano-Recycler Swarm for autonomous micro-level recycling</li>
+                        <li>Implement AI-assisted waste routing and predictive maintenance</li>
+                        <li>Test advanced bio-engineered microbes/fungi for Martian conditions</li>
+                        <li>Pilot initial Brain Interface interaction for human-ORCA control</li>
+                        <li>Expand Earth Portal to include gamified educational modules and global collaboration dashboards</li>
+                      </ul>
+                    </div>
+
+                    {/* 2029 */}
+                    <div className="bg-gradient-to-r from-yellow-900/20 to-amber-900/20 p-6 rounded-lg border border-yellow-500/20">
+                      <h5 className="text-lg font-bold text-yellow-300 mb-3">2029 — Interplanetary Scaling & Deployment</h5>
+                      <ul className="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                        <li>Deploy full ORCA system with integrated MIRU, BICL, Hydraulic Press, and AI optimization</li>
+                        <li>Establish protocols under Interplanetary Waste Accord for standardized space recycling</li>
+                        <li>Expand Bio-Artistic Weaving programs: functional and aesthetic habitat materials from recycled waste</li>
+                        <li>Monitor long-term performance and refine operations through Earth-Mars feedback loop</li>
+                      </ul>
+                    </div>
+
+                    {/* 2030+ */}
+                    <div className="bg-gradient-to-r from-slate-800/60 to-slate-700/60 p-6 rounded-lg border border-slate-400/20">
+                      <h5 className="text-lg font-bold text-slate-200 mb-3">2030+ — Long-Term Sustainability</h5>
+                      <ul className="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                        <li>Scale ORCA for multiple habitats and interplanetary missions</li>
+                        <li>Fully implement Brain Interface control and autonomous optimization</li>
+                        <li>Integrate all modules into a circular ecosystem for Mars habitats</li>
+                        <li>Share system blueprint globally for interplanetary collaboration and education</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -797,45 +1201,6 @@ const TrashinovaApp = () => {
                </div>
              ))}
            </div>
-        </div>
-      </section>
-
-      {/* Research Section */}
-      <section id="research" className="py-20 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
-              Research
-            </h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Advancing the science of orbital debris management and space sustainability
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-slate-800/50 p-6 rounded-lg border border-orange-800/30">
-              <h3 className="text-xl font-semibold text-orange-400 mb-3">Overview</h3>
-              <p className="text-slate-300">Our research focuses on developing innovative approaches to identify, track, and repurpose orbital debris for sustainable space exploration.</p>
-            </div>
-
-            <div className="bg-slate-800/50 p-6 rounded-lg border border-orange-800/30">
-              <h3 className="text-xl font-semibold text-orange-400 mb-3">Publications</h3>
-              <ul className="text-slate-300 space-y-2">
-                <li>• Autonomous Debris Classification Systems (2024)</li>
-                <li>• Material Recovery in Low Earth Orbit (2024)</li>
-                <li>• Predictive Orbital Decay Models (2023)</li>
-              </ul>
-            </div>
-
-            <div className="bg-slate-800/50 p-6 rounded-lg border border-orange-800/30">
-              <h3 className="text-xl font-semibold text-orange-400 mb-3">Open Problems</h3>
-              <ul className="text-slate-300 space-y-2">
-                <li>• Micro-debris tracking accuracy</li>
-                <li>• Cost-effective retrieval mechanisms</li>
-                <li>• International debris sharing protocols</li>
-              </ul>
-            </div>
-          </div>
         </div>
       </section>
 
