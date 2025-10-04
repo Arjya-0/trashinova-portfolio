@@ -32,7 +32,10 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
   const modelRef = useRef();
   const [loadingState, setLoadingState] = useState('loading');
   const [loadProgress, setLoadProgress] = useState(0);
-  // OBJ-specific state (always declare hooks at top level)
+  // GLB/GLTF-specific state
+  const [glbModel, setGlbModel] = useState(null);
+  const [glbError, setGlbError] = useState(null);
+  // OBJ-specific state 
   const [objModel, setObjModel] = useState(null);
   const [objError, setObjError] = useState(null);
 
@@ -45,35 +48,71 @@ function Model({ url, onLoad, onError, onProgress, isLargeFile = false }) {
   }, [url, isLargeFile, fileExtension]);
   
   if (fileExtension === 'glb' || fileExtension === 'gltf') {
-    try {
-      // For GLTF/GLB files, we need to handle them with progress tracking
-      const { scene } = useGLTF(url, true); // Enable draco compression support
+    // Use direct loading approach for GLB/GLTF files too
+    React.useEffect(() => {
+      console.log('Loading GLB/GLTF file with direct approach:', url);
       
-      React.useEffect(() => {
-        if (scene) {
-          console.log('GLB/GLTF model loaded successfully:', url);
-          setLoadingState('loaded');
-          setLoadProgress(100);
-          onLoad && onLoad();
-        }
-      }, [scene, onLoad]);
+      // Import GLTFLoader dynamically
+      import('three/examples/jsm/loaders/GLTFLoader').then(({ GLTFLoader }) => {
+        const loader = new GLTFLoader();
+        
+        // For now, skip Draco loader to avoid path issues
+        console.log('GLTFLoader initialized, loading model...');
+        
+        // Load the model
+        loader.load(
+          url,
+          // onLoad
+          (gltf) => {
+            console.log('GLB/GLTF model loaded successfully:', url);
+            setGlbModel(gltf.scene);
+            setLoadingState('loaded');
+            setLoadProgress(100);
+            onLoad && onLoad();
+          },
+          // onProgress
+          (progress) => {
+            if (progress.lengthComputable) {
+              const percent = (progress.loaded / progress.total) * 100;
+              console.log('GLB loading progress:', percent.toFixed(1) + '%');
+              setLoadProgress(percent);
+              onProgress && onProgress(percent / 100);
+            }
+          },
+          // onError
+          (error) => {
+            console.error('Error loading GLB/GLTF model:', error);
+            setGlbError(error);
+            setLoadingState('error');
+            onError && onError(error);
+          }
+        );
+      }).catch((error) => {
+        console.error('Error importing GLTFLoader:', error);
+        onError && onError(error);
+      });
+    }, [url, onLoad, onError, onProgress]);
 
+    if (glbError) {
+      React.useEffect(() => {
+        onError && onError(glbError);
+      }, [glbError, onError]);
+      return null;
+    }
+
+    if (glbModel) {
       return (
         <primitive 
           ref={modelRef}
-          object={scene} 
+          object={glbModel} 
           scale={1}
           position={[0, 0, 0]}
         />
       );
-    } catch (error) {
-      console.error('Error loading GLB/GLTF model:', error);
-      React.useEffect(() => {
-        setLoadingState('error');
-        onError && onError(error);
-      }, [error, onError]);
-      return null;
     }
+
+    // Still loading
+    return null;
   } else if (fileExtension === 'obj') {
     // OBJ files - use the state declared at the top
 
